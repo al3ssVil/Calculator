@@ -8,8 +8,63 @@
         Icon="calculator_image.png" Title=" Calculator" Height="540" Width="334" >
     <Grid>
 
+        <Grid x:Name="SidebarMenu" Background="Gray" Width="200" HorizontalAlignment="Left" VerticalAlignment="Stretch" Visibility="Collapsed" Panel.ZIndex="1">
+       
+            <!-- Contenutul meniului lateral -->
+            <StackPanel>
+                
+                <Button Content="🛠️" 
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top" 
+                 Height="40" 
+                 Width="40" 
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 BorderThickness="2"
+                 Opacity="1"
+                 Click="Settings">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <!-- When mouse is over the button, change background and opacity -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <!-- When button is pressed, reduce opacity -->
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="Option 1" Height="40" Width="200" />
+                <Button Content="Option 2" Height="40" Width="200" />
+                <Button Content="Option 3" Height="40" Width="200" />
+            </StackPanel>
+        </Grid>
+
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
-            
+
             <Button Content="🛠️" 
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" 
@@ -18,7 +73,8 @@
                 Background="Transparent"
                 BorderBrush="Transparent"
                 BorderThickness="2"
-                Opacity="1" >
+                Opacity="1"
+                Click="Settings">
 
                 <Button.Style>
                     <Style TargetType="Button">
@@ -46,6 +102,7 @@
                                         <Trigger Property="IsPressed" Value="True">
                                             <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
                                             <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                           
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -105,7 +162,7 @@
             </Button.Style>
         </Button>
 
-        <TextBox 
+        <TextBox Name="textBox"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             BorderBrush="Gray" 
@@ -113,6 +170,7 @@
             Margin="0,74,0,0"
             Height="74"
             Width="320"
+            Focusable="True"
             PreviewTextInput="TextBox_PreviewTextInput"
             InputScope="Number" 
             TextAlignment="Right"
@@ -132,9 +190,9 @@
                 </ControlTemplate>
             </TextBox.Template>
         </TextBox>
-        
+
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,150,5,0">
-          
+
             <Button Content="MC" 
                     Height="35"
                     Width="51.5"
@@ -150,7 +208,7 @@
                                         Background="{TemplateBinding Background}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="2"
-                                        CornerRadius="5">   
+                                        CornerRadius="5">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
 
@@ -172,7 +230,7 @@
                 </Button.Style>
 
             </Button>
-            
+
             <Button Content="Mr" 
                     Height="35"
                     Width="51.5"
@@ -188,7 +246,7 @@
                                         Background="{TemplateBinding Background}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="2"
-                                        CornerRadius="5">       
+                                        CornerRadius="5">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
 
@@ -210,7 +268,7 @@
                 </Button.Style>
 
             </Button>
-            
+
             <Button Content="M+" 
                     Height="35"
                     Width="51.5"
@@ -226,7 +284,7 @@
                                         Background="{TemplateBinding Background}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="2"
-                                        CornerRadius="5">       
+                                        CornerRadius="5">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
 
@@ -248,7 +306,7 @@
                 </Button.Style>
 
             </Button>
-            
+
             <Button Content="M-" 
                     Height="35"
                     Width="51.5"
@@ -285,7 +343,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            
+
             <Button Content="MS" 
                     Height="35"
                     Width="51.5"
@@ -359,7 +417,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            
+
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,180,0,0">
@@ -714,7 +772,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            
+
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,285,0,0">
@@ -725,7 +783,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -763,7 +822,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -801,7 +861,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -881,7 +942,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -919,7 +981,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -957,7 +1020,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1026,7 +1090,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            
+
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,390,0,0">
@@ -1037,7 +1101,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1075,7 +1140,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1113,7 +1179,8 @@
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="20">
+                 FontSize="20"
+                 Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1238,7 +1305,8 @@
                 Background="Transparent"
                 BorderBrush="Transparent"
                 FontFamily="Segoe Script"
-                FontSize="20">
+                FontSize="20"
+                Click="Button_0Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1276,7 +1344,8 @@
                   Background="Transparent"
                   BorderBrush="Transparent"
                   FontFamily="Segoe Script"
-                  FontSize="20">
+                  FontSize="20"
+                  Click="Button_PointClick">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1359,7 +1428,6 @@
             </Button>
 
         </StackPanel>
-
 
     </Grid>
 </Window> 

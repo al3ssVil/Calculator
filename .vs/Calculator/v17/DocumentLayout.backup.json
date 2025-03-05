@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\vilcu\\Desktop\\projects\\Calculator\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F8362802-9406-42B1-9928-860835784BFC}|Calculator\\Calculator.csproj|c:\\users\\vilcu\\desktop\\projects\\calculator\\calculator\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8362802-9406-42B1-9928-860835784BFC}|Calculator\\Calculator.csproj|solutionrelative:calculator\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F8362802-9406-42B1-9928-860835784BFC}|Calculator\\Calculator.csproj|c:\\users\\vilcu\\desktop\\projects\\calculator\\calculator\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{F8362802-9406-42B1-9928-860835784BFC}|Calculator\\Calculator.csproj|solutionrelative:calculator\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8362802-9406-42B1-9928-860835784BFC}|Calculator\\Calculator.csproj|c:\\users\\vilcu\\desktop\\projects\\calculator\\calculator\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8362802-9406-42B1-9928-860835784BFC}|Calculator\\Calculator.csproj|solutionrelative:calculator\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F8362802-9406-42B1-9928-860835784BFC}|Calculator\\Calculator.csproj|c:\\users\\vilcu\\desktop\\projects\\calculator\\calculator\\calculator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -18,11 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\vilcu\\Desktop\\projects\\Calculator\\Calculator\\MainWindow.xaml",
               "RelativeDocumentMoniker": "Calculator\\MainWindow.xaml",
@@ -34,7 +42,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\vilcu\\Desktop\\projects\\Calculator\\Calculator\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Calculator\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\vilcu\\Desktop\\projects\\Calculator\\Calculator\\MainWindow.xaml.cs*",
+              "RelativeToolTip": "Calculator\\MainWindow.xaml.cs*",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAcwH8AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T18:07:25.625Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\vilcu\\Desktop\\projects\\Calculator\\Calculator\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "Calculator\\AssemblyInfo.cs",
+              "ToolTip": "C:\\Users\\vilcu\\Desktop\\projects\\Calculator\\Calculator\\AssemblyInfo.cs",
+              "RelativeToolTip": "Calculator\\AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T18:07:13.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Calculator.csproj",
               "DocumentMoniker": "C:\\Users\\vilcu\\Desktop\\projects\\Calculator\\Calculator\\Calculator.csproj",
               "RelativeDocumentMoniker": "Calculator\\Calculator.csproj",

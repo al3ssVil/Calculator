@@ -8,46 +8,26 @@
         Icon="calculator_image.png" Title=" Calculator" Height="540" Width="334" >
     <Grid>
 
-        <Grid x:Name="SidebarMenu" Background="Gray" Width="200" HorizontalAlignment="Left" VerticalAlignment="Stretch" Visibility="Collapsed" Panel.ZIndex="1">
-       
-            <!-- Contenutul meniului lateral -->
+    <Grid x:Name="SidebarMenu" Background="Gray" Width="200" HorizontalAlignment="Left" VerticalAlignment="Stretch" Visibility="Collapsed" Panel.ZIndex="1">
+            <!-- Conținutul meniului lateral -->
             <StackPanel>
-                
-                <Button Content="🛠️" 
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top" 
-                 Height="40" 
-                 Width="40" 
-                 Background="Transparent"
-                 BorderBrush="Transparent"
-                 BorderThickness="2"
-                 Opacity="1"
-                 Click="Settings">
+                <Button Content="🛠️" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1" Click="Settings">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Name="Border" 
-                                             Background="{TemplateBinding Background}"
-                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                             BorderThickness="2"
-                                             CornerRadius="5">
+                                        <Border Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
-
                                         <ControlTemplate.Triggers>
-                                            <!-- When mouse is over the button, change background and opacity -->
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
                                                 <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
                                             </Trigger>
-
-                                            <!-- When button is pressed, reduce opacity -->
                                             <Trigger Property="IsPressed" Value="True">
                                                 <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
                                                 <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
-
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -56,13 +36,15 @@
                         </Style>
                     </Button.Style>
                 </Button>
-
-                <Button Content="Option 1" Height="40" Width="200" />
-                <Button Content="Option 2" Height="40" Width="200" />
-                <Button Content="Option 3" Height="40" Width="200" />
+                <Button Content="Standard" Height="40" Width="200" Click="StandardMode"/>
+                <Button Content="Programmer" Height="40" Width="200" Click="ProgrammerMode"/>
+                <Button Content="Help" Height="40" Width="200" Click="HelpMode"/>
+                <CheckBox Name="DigitGroupingCheckBox" Content="Digit Grouping" Height="40" Width="200" Click="DigitGroupingCheckBox_Checked"/>
             </StackPanel>
         </Grid>
-
+    
+    <Grid x:Name="StandardModeGrid" >
+  
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
 
             <Button Content="🛠️" 
@@ -162,7 +144,7 @@
             </Button.Style>
         </Button>
 
-        <TextBox Name="textBox"
+        <TextBox Name="textBoxStandard"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             BorderBrush="Gray" 
@@ -557,7 +539,8 @@
             Background="Transparent"
             BorderBrush="Transparent"
             FontSize="16"
-            FontFamily="Segoe Script">
+            FontFamily="Segoe Script"
+            Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <!-- ControlTemplate with rounded corners -->
@@ -784,7 +767,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                Click="Button_0Click">
+                Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -823,7 +806,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -862,7 +845,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -943,7 +926,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -982,7 +965,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1021,7 +1004,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1102,7 +1085,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1141,7 +1124,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1180,7 +1163,7 @@
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
                  FontSize="20"
-                 Click="Button_0Click">
+                 Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1306,7 +1289,7 @@
                 BorderBrush="Transparent"
                 FontFamily="Segoe Script"
                 FontSize="20"
-                Click="Button_0Click">
+               Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1345,7 +1328,7 @@
                   BorderBrush="Transparent"
                   FontFamily="Segoe Script"
                   FontSize="20"
-                  Click="Button_PointClick">
+                  Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1428,6 +1411,1358 @@
             </Button>
 
         </StackPanel>
+            
+    </Grid>
+        
+    <Grid x:Name="ProgrammerModeGrid" >
+        
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
 
+                <Button Content="🛠️" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top" 
+                    Height="40" 
+                    Width="40" 
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="2"
+                    Opacity="1"
+                    Click="Settings">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- ControlTemplate with rounded corners -->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="2"
+                                    CornerRadius="5">
+                                            <!-- ContentPresenter to display button content -->
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <!-- When mouse is over the button, change background and opacity -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <!-- When button is pressed, reduce opacity -->
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Label Content="Programmer" 
+                   TextBlock.FontFamily="Segoe Script"
+                   FontSize="16"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center">
+                </Label>
+
+            </StackPanel>
+
+            <TextBox Name="textBoxProgrammer"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                BorderBrush="Gray" 
+                BorderThickness="2" 
+                Margin="0,74,0,0"
+                Height="37"
+                Width="320"
+                Focusable="True"
+                PreviewTextInput="TextBox_PreviewTextInput"
+                InputScope="Number" 
+                TextAlignment="Right"
+                VerticalContentAlignment="Center"
+                FontSize="22"
+                FontFamily="Segoe Script">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="5">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
+
+            <StackPanel Margin="0,117,0,0">
+
+                <!-- Rândul HEX -->
+                <Button x:Name="btnHex" Width="360" Height="40" Click="Button_Click" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBlock Text="HEX" FontSize="16" Width="60" VerticalAlignment="Center"/>
+                        <TextBox x:Name="hexTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0" />
+                    </StackPanel>
+                </Button>
+
+                <!-- Rândul DEC -->
+                <Button x:Name="btnDec" Width="360" Height="40" Click="Button_Click"  BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBlock Text="DEC" FontSize="16" Width="60" VerticalAlignment="Center"/>
+                        <TextBox x:Name="decimalTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Rândul OCT -->
+                <Button x:Name="btnOct" Width="360" Height="40" Click="Button_Click"  BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBlock Text="OCT" FontSize="16" Width="60" VerticalAlignment="Center"/>
+                        <TextBox x:Name="octalTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Rândul BIN -->
+                <Button x:Name="btnBin" Width="360" Height="40" Click="Button_Click"  BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBlock Text="BIN" FontSize="16" Width="60" VerticalAlignment="Center"/>
+                        <TextBox x:Name="binaryTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0" />
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,281,0,0">
+
+                <Button Content="A" 
+                    Height="38"
+                    Width="64"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    FontSize="16"
+                    FontFamily="Segoe Script">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- ControlTemplate with rounded corners -->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="10">
+                                            <!-- ContentPresenter to display button content -->
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <!-- When mouse is over the button, change background and opacity -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <!-- When button is pressed, reduce opacity -->
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+                <Button Content="«" 
+                    Height="38"
+                    Width="64"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    FontSize="20"
+                    FontFamily="Segoe Script">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- ControlTemplate with rounded corners -->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="10">
+                                            <!-- ContentPresenter to display button content -->
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <!-- When mouse is over the button, change background and opacity -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <!-- When button is pressed, reduce opacity -->
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+                <Button Content="»" 
+                    Height="38"
+                    Width="64"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    FontSize="20"
+                    FontFamily="Segoe Script">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- ControlTemplate with rounded corners -->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="5">
+                                            <!-- ContentPresenter to display button content -->
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <!-- When mouse is over the button, change background and opacity -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <!-- When button is pressed, reduce opacity -->
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+                <Button Content="C" 
+                    Height="38"
+                    Width="64"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    FontSize="16"
+                    FontFamily="Segoe Script">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- ControlTemplate with rounded corners -->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="2"
+                            CornerRadius="5">
+                                            <!-- ContentPresenter to display button content -->
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <!-- When mouse is over the button, change background and opacity -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <!-- When button is pressed, reduce opacity -->
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+                <Button Content="🔄" 
+                    Height="38"
+                    Width="64"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    FontSize="14"
+                    FontFamily="Segoe Script">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- ControlTemplate with rounded corners -->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="5">
+                                            <!-- ContentPresenter to display button content -->
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <!-- When mouse is over the button, change background and opacity -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <!-- When button is pressed, reduce opacity -->
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,317,0,0">
+
+                <Button Content="B"
+                      FontStyle="Italic"
+                      Height="38"
+                      Width="64"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      FontFamily="Segoe Script"
+                      FontSize="16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                              Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="2"
+                                              CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="("
+                     FontStyle="Italic"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content=")"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="%"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+
+                </Button>
+
+                <Button Content="➗" 
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="12">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,353,0,0">
+
+                <Button Content="C"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+                <Button Content="7"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                     Background="{TemplateBinding Background}"
+                                     BorderBrush="{TemplateBinding BorderBrush}"
+                                     BorderThickness="2"
+                                     CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="8"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="9"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                    Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="✖️" 
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="12">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,389,0,0">
+
+                <Button Content="D"
+                  Height="38"
+                  Width="64"
+                  Background="Transparent"
+                  BorderBrush="Transparent"
+                  FontFamily="Segoe Script"
+                  FontSize="16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="2"
+                                      CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="4"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="5"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                                 Background="{TemplateBinding Background}"
+                                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                                 BorderThickness="2"
+                                                 CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="6"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="➖" 
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="12">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                     Background="{TemplateBinding Background}"
+                                     BorderBrush="{TemplateBinding BorderBrush}"
+                                     BorderThickness="2"
+                                     CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,425,0,0">
+
+                <Button Content="E"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="1"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="2"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                    Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="3"
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="➕" 
+                     Height="38"
+                     Width="64"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     FontFamily="Segoe Script"
+                     FontSize="12">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="2"
+                                             CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,461,0,0">
+
+                <Button Content="F"
+                    Height="38"
+                    Width="64"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    FontFamily="Segoe Script"
+                    FontSize="16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                              Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="2"
+                                              CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button 
+                      Height="38"
+                      Width="64"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      FontFamily="Segoe Script"
+                      FontSize="16">
+                    <TextBlock FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <TextBlock.Inlines>
+                            <Run Text="➕" FontSize="8" BaselineAlignment="Superscript" />
+                            <Run Text="/"  FontWeight="Bold" FontSize="11" BaselineAlignment="TextTop" />
+                            <Run Text="➖" FontSize="8" BaselineAlignment="Subscript"/>
+                        </TextBlock.Inlines>
+                    </TextBlock>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                              Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="2"
+                                              CornerRadius="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="0"
+                    Height="38"
+                    Width="64"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    FontFamily="Segoe Script"
+                    FontSize="16"
+                    Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                              Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="2"
+                                              CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="•"
+                      Height="38"
+                      Width="64"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      FontFamily="Segoe Script"
+                      FontSize="16"
+                     Click="Button_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                              Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="2"
+                                              CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button 
+                      Height="38"
+                      Width="64"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      FontFamily="Segoe Script"
+                      FontSize="16">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Prima linie -->
+                        <Rectangle Fill="Black" Height="1.5" Grid.Row="0" />
+
+                        <!-- A doua linie, cu spațiu între ele -->
+                        <Rectangle Fill="Black" Height="1.5" Grid.Row="1" Margin="0,3,0,0"/>
+                    </Grid>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                              Background="{TemplateBinding Background}"
+                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                              BorderThickness="2"
+                                              CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+        
     </Grid>
 </Window> 

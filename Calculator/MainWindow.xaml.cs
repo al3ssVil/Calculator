@@ -9,23 +9,36 @@ namespace Calculator
     {
         private Standard standardMode;
         private Programmer programmerMode;
+        private int baseSelected = 10;
+        private string clipboardText = string.Empty;
+
         public MainWindow()
         {
             InitializeComponent();
             standardMode = new Standard(textBoxStandard);
             programmerMode = new Programmer(textBoxProgrammer, hexTextBox, decimalTextBox, octalTextBox, binaryTextBox);
-            this.KeyDown += (s, e) => standardMode.HandleKeyDown();  // Asigură că tastatura funcționează direct pe textBox
+            this.KeyDown += (s, e) => standardMode.HandleKeyDown();  //function directly on textbox
             this.KeyDown += (s, e) => programmerMode.HandleKeyDown();
-            this.KeyDown += (s, e) => HandleDeleteKey(e);
+
+            this.PreviewKeyDown += (s, e) => HandleDeleteKey(e);
+            this.PreviewKeyDown += (s, e) => HandleEnterKey(e); 
+            this.PreviewKeyDown += (s, e) => HandleEscKey(e);
             LoadLastUsedMode();
+            UpdateBasesBasedOnSelectedBase();
         }
 
         private void LoadLastUsedMode()
         {
-            // Citește valoarea din setările aplicației
             string lastUsedMode = Properties.Settings.Default.lastUsedMode;
+            bool isDigitGroupingEnabled = Properties.Settings.Default.DigitGroupingEnabled;
 
-            // Dacă ultima valoare salvată a fost "Programmer", trecem în modul respectiv
+            CheckBox? checkBox = FindName("DigitGroupingCheckBox") as CheckBox;
+
+            if (checkBox != null)
+            {
+                checkBox.IsChecked = isDigitGroupingEnabled; 
+            }
+
             if (lastUsedMode == "Programmer")
             {
                 ShowOnlyThisGrid(ProgrammerModeGrid);
@@ -34,30 +47,38 @@ namespace Calculator
             {
                 ShowOnlyThisGrid(StandardModeGrid);
             }
-            bool isDigitGroupingEnabled = Properties.Settings.Default.DigitGroupingEnabled;
-            // Aplică starea la CheckBox și setările modului
-            CheckBox checkBox = FindName("DigitGroupingCheckBox") as CheckBox;
 
-            if (StandardModeGrid.Visibility == Visibility.Visible)
-                standardMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
-            else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
-                programmerMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
+            standardMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
+            programmerMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
         }
         private void SaveLastUsedMode(string mode)
         {
-            // Salvează modul curent în setările aplicației
             Properties.Settings.Default.lastUsedMode = mode;
-            Properties.Settings.Default.Save();  // Salvează setările
+
+            CheckBox? checkBox = FindName("DigitGroupingCheckBox") as CheckBox;
+
+            if (checkBox != null)
+            {
+                Properties.Settings.Default.DigitGroupingEnabled = checkBox.IsChecked == true;
+            }
+
+            Properties.Settings.Default.Save(); 
+
+            bool isDigitGroupingEnabled = Properties.Settings.Default.DigitGroupingEnabled;
+
+            standardMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
+            programmerMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
         }
 
+        //keyboard input validation
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (StandardModeGrid.Visibility == Visibility.Visible)
             {
                 standardMode.HandlePreviewTextInput(e);
-                if (Properties.Settings.Default.DigitGroupingEnabled)  // Verifică dacă gruparea este activată
+                if (Properties.Settings.Default.DigitGroupingEnabled) 
                 {
-                    standardMode.UpdateTextBoxWithGrouping();  // Actualizează gruparea
+                    standardMode.UpdateTextBoxWithGrouping(); 
                 }
             }
             else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
@@ -65,7 +86,8 @@ namespace Calculator
                 programmerMode.HandlePreviewTextInput(e);
                 if (Properties.Settings.Default.DigitGroupingEnabled)
                 {
-                    programmerMode.UpdateTextBoxWithGrouping();  // Aplică gruparea și în modul Programmer
+                    programmerMode.UpdateTextBoxWithGrouping();
+                    UpdateBasesBasedOnSelectedBase();
                 }
             }
         }
@@ -75,12 +97,10 @@ namespace Calculator
             bool isChecked = (sender as CheckBox)?.IsChecked == true;
 
             Properties.Settings.Default.DigitGroupingEnabled = isChecked;
-            Properties.Settings.Default.Save();  // Salvează setările
+            Properties.Settings.Default.Save();  
 
-            if (StandardModeGrid.Visibility == Visibility.Visible)
-                standardMode.HandleDigitGroupingChecked(isChecked);
-            else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
-                programmerMode.HandleDigitGroupingChecked(isChecked);
+            standardMode.HandleDigitGroupingChecked(isChecked);
+            programmerMode.HandleDigitGroupingChecked(isChecked);
         }
 
         private void ShowOnlyThisGrid(Grid gridToShow)
@@ -119,27 +139,30 @@ namespace Calculator
             }
         }
 
+        //buttons input validation
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             string? buttonText = button.Content.ToString();
+
             if (buttonText == "•")
             {
                 buttonText = ".";
             }
+
             if (buttonText == "🔄")
+            {
                 if (textBoxStandard.Text.Length > 0)
                 {
                     textBoxStandard.Text = textBoxStandard.Text.Substring(0, textBoxStandard.Text.Length - 1);
                     standardMode.TextBox_PreviewKeyDown();
                 }
-                else
-               if (textBoxProgrammer.Text.Length > 0)
+                else if (textBoxProgrammer.Text.Length > 0)
                 {
                     textBoxProgrammer.Text = textBoxProgrammer.Text.Substring(0, textBoxProgrammer.Text.Length - 1);
                     programmerMode.TextBox_PreviewKeyDown();
                 }
-
+            }
             if (StandardModeGrid.Visibility == Visibility.Visible && buttonText != null)
             {
                 standardMode.HandleButtonClick(buttonText);
@@ -147,18 +170,23 @@ namespace Calculator
             else if (ProgrammerModeGrid.Visibility == Visibility.Visible && buttonText != null)
             {
                 programmerMode.HandleButtonClick(buttonText);
+                UpdateBasesBasedOnSelectedBase();
+
             }
         }
+
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            // Salvează setările atunci când aplicația este închisă
             SaveLastUsedMode(StandardModeGrid.Visibility == Visibility.Visible ? "Standard" : "Programmer");
         }
+
+        //delete keyboard
         private void HandleDeleteKey(KeyEventArgs e)
         { 
             if (e.Key == Key.Delete || e.Key == Key.Back)
             {
+
                 if (StandardModeGrid.Visibility == Visibility.Visible)
                 {
                     standardMode.HandleDeleteKey();
@@ -166,10 +194,230 @@ namespace Calculator
                 else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
                 {
                     programmerMode.HandleDeleteKey();
+                    UpdateBasesBasedOnSelectedBase();
                 }
 
                 e.Handled = true;
             }
         }
+
+        private void BaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button? clickedButton = sender as Button;
+
+            if (clickedButton != null)
+            {
+                if (clickedButton == btnHex)
+                    baseSelected = 16;
+                else if (clickedButton == btnDec)
+                    baseSelected = 10;
+                else if (clickedButton == btnOct)
+                    baseSelected = 8;
+                else if (clickedButton == btnBin)
+                    baseSelected = 2;
+
+                MessageBox.Show($"Butonul:{clickedButton.Name}, baza:{baseSelected}");
+                UpdateBasesBasedOnSelectedBase();
+            }
+        }
+
+        private void UpdateBasesBasedOnSelectedBase()
+        {
+            string inputValue = textBoxProgrammer.Text; 
+
+            //valid
+            if (string.IsNullOrWhiteSpace(inputValue))
+            {
+                programmerMode.ResetTextBoxes();    
+                return;
+            }
+
+            try
+            {
+                programmerMode.UpdateAllBases(inputValue, baseSelected);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Conversion error: {ex.Message}");
+                programmerMode.ResetTextBoxes();
+            }
+        }
+
+        public void OnOperatorButtonClick(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button == null) return;
+
+            string operatorText = string.Empty;
+
+            switch (button.Name)
+            {
+                case "btnAdd":
+                case "btnAddP":
+                    operatorText = "+";
+                    break;
+                case "btnSubtract":
+                case "btnSubtractP":
+                    operatorText = "-";
+                    break;
+                case "btnMultiply":
+                case "btnMultiplyP":
+                    operatorText = "*";
+                    break;
+                case "btnDivide":
+                case "btnDivideP":
+                    operatorText = "/";
+                    break;
+                case "btnPercentage":
+                case "btnPercentageP":
+                    operatorText = "%";
+                    break;
+                case "btnDivideX":
+                    operatorText = "1/x"; 
+                    break;
+                case "btnSquare":
+                    operatorText = "^2";
+                    break;
+
+                case "btnSqrt":
+                    operatorText = "sqrt"; 
+                    break;
+                case "btnPlusMinus":
+                case "btnPlusMinusP":
+                    operatorText = "+/-";
+                    break;
+                case "btnEqual":
+                case "btnEqualP":
+                    operatorText = "="; 
+                    break;
+                default:
+                    break;
+            }
+
+            //MessageBox.Show("Operator apasat: " + operatorText);
+
+            if (StandardModeGrid.Visibility == Visibility.Visible)
+            {
+                standardMode.HandleOperatorClick(operatorText);
+            }
+            else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+            {
+                programmerMode.HandleOperatorClick(operatorText);
+            }
+        }
+
+        private void HandleEnterKey(KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (StandardModeGrid.Visibility == Visibility.Visible)
+                {
+                    standardMode.HandleOperatorClick("=");
+                }
+                else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+                {
+                    programmerMode.HandleOperatorClick("=");
+                }
+            }
+        }
+
+        private void HandleEscKey(KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                if (StandardModeGrid.Visibility == Visibility.Visible)
+                {
+                    standardMode.ClearResult(); 
+                }
+                else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+                {
+                    programmerMode.ClearResult(); 
+                }
+            }
+        }
+
+        private void CutAction(object sender, RoutedEventArgs e)
+        {
+            string textToCut = string.Empty;
+
+            if (StandardModeGrid.Visibility == Visibility.Visible)
+            {
+                if (string.IsNullOrEmpty(textBoxStandard.SelectedText))
+                {
+                    textBoxStandard.SelectAll(); 
+                }
+
+                textToCut = textBoxStandard.SelectedText;
+            }
+            else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+            {
+                if (string.IsNullOrEmpty(textBoxProgrammer.SelectedText))
+                {
+                    textBoxProgrammer.SelectAll();
+                }
+
+                textToCut = textBoxProgrammer.SelectedText;
+            }
+
+            if (!string.IsNullOrEmpty(textToCut))
+            {
+                clipboardText = textToCut;
+                Clipboard.SetText(textToCut);
+
+                if (StandardModeGrid.Visibility == Visibility.Visible)
+                {
+                    textBoxStandard.SelectedText = string.Empty;
+                }
+                else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+                {
+                    textBoxProgrammer.SelectedText = string.Empty;
+                }
+            }
+        }
+
+        private void CopyAction(object sender, RoutedEventArgs e)
+        {
+            string textToCopy = string.Empty;
+
+            if (StandardModeGrid.Visibility == Visibility.Visible)
+            {
+                if (string.IsNullOrEmpty(textBoxStandard.SelectedText))
+                {
+                    textBoxStandard.SelectAll();
+                }
+                textToCopy = textBoxStandard.SelectedText;
+            }
+            else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+            {
+                if (string.IsNullOrEmpty(textBoxProgrammer.SelectedText))
+                {
+                    textBoxProgrammer.SelectAll();
+                }
+                textToCopy = textBoxProgrammer.SelectedText;
+            }
+
+            if (!string.IsNullOrEmpty(textToCopy))
+            {
+                clipboardText = textToCopy;
+                Clipboard.SetText(textToCopy);
+            }
+        }
+
+        private void PasteAction(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(clipboardText))
+            {
+                if (StandardModeGrid.Visibility == Visibility.Visible)
+                {
+                    textBoxStandard.SelectedText = clipboardText;
+                }
+                else
+                    if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+                {
+                    textBoxProgrammer.SelectedText = clipboardText;
+                }
+            }
+        }
+
     }
 }

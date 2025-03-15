@@ -5,43 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Icon="calculator_image.png" Title=" Calculator" Height="540" Width="334" >
+        Icon="calculator_image.png" Title=" Calculator" Height="540" Width="334"  ResizeMode="NoResize">
     <Grid>
 
     <Grid x:Name="SidebarMenu" Background="Gray" Width="200" HorizontalAlignment="Left" VerticalAlignment="Stretch" Visibility="Collapsed" Panel.ZIndex="1">
-            <!-- Conținutul meniului lateral -->
+            
             <StackPanel>
-                <Button Content="🛠️" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1" Click="Settings">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
-                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
-                                            </Trigger>
-                                            <Trigger Property="IsPressed" Value="True">
-                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
-                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                
+                <StackPanel Orientation="Horizontal">
+                    
+                    <Button Content="🛠️" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1" Click="Settings">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                    <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                    <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    
+                    <Menu Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1">
+                    
+                           <MenuItem Header="File" Height="40" >
+                        
+                        <MenuItem Header="Cut" Click="CutAction"/>
+                        <MenuItem Header="Copy" Click="CopyAction"/>
+                        <MenuItem Header="Paste" Click="PasteAction"/>
+                      
+                            </MenuItem>
+
+                            <MenuItem Header="Help" Height="40">
+                    
+                        <MenuItem Header="About" Click="HelpMode"/>
+                
+                            </MenuItem>
+                        
+                    </Menu>
+                    
+                </StackPanel>
+                
                 <Button Content="Standard" Height="40" Width="200" Click="StandardMode"/>
                 <Button Content="Programmer" Height="40" Width="200" Click="ProgrammerMode"/>
                 <Button Content="Help" Height="40" Width="200" Click="HelpMode"/>
                 <CheckBox Name="DigitGroupingCheckBox" Content="Digit Grouping" Height="40" Width="200" Click="DigitGroupingCheckBox_Checked"/>
+            
             </StackPanel>
-        </Grid>
+
+    </Grid>
     
     <Grid x:Name="StandardModeGrid" >
   
@@ -158,7 +184,8 @@
             TextAlignment="Right"
             VerticalContentAlignment="Center"
             FontSize="40"
-            FontFamily="Segoe Script">
+            FontFamily="Segoe Script"
+            IsReadOnly="True">
             <TextBox.Template>
                 <ControlTemplate TargetType="TextBox">
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
@@ -404,13 +431,15 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,180,0,0">
 
-            <Button Content="%" 
+            <Button Content="%"
+            Name="btnPercentage"
             Height="55"
             Width="80"
             Background="Transparent"
             BorderBrush="Transparent"
             FontSize="19"
-            FontFamily="Segoe Script">
+            FontFamily="Segoe Script"
+            Click="OnOperatorButtonClick">
                 <Button.Style>
                     <Style TargetType="Button">
                         <!-- ControlTemplate with rounded corners -->
@@ -581,14 +610,15 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,232.5,0,0">
 
-            <Button
+            <Button Name="btnDivideX" 
                  FontStyle="Italic"
                  Height="55"
                  Width="80"
                  Background="Transparent"
                  BorderBrush="Transparent"
-                 FontFamily="Segoe Script">
-                <TextBlock FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top">
+                 FontFamily="Segoe Script"
+                Click="OnOperatorButtonClick">
+                <TextBlock  FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <TextBlock.Inlines>
                         <Run Text="1" FontSize="12" BaselineAlignment="Superscript" />
                         <Run Text="/" FontSize="16" BaselineAlignment="TextTop" />
@@ -626,12 +656,13 @@
                 </Button.Style>
             </Button>
 
-            <Button 
+            <Button Name="btnSquare" 
                  Height="55"
                  Width="80"
                  Background="Transparent"
                  BorderBrush="Transparent"
-                 FontFamily="Segoe Script">
+                 FontFamily="Segoe Script"
+                Click="OnOperatorButtonClick">
                 <TextBlock FontSize="16" HorizontalAlignment="Center">
                     <TextBlock.Inlines>
                         <Run Text="x" />
@@ -669,12 +700,13 @@
                 </Button.Style>
             </Button>
 
-            <Button
+            <Button Name="btnSqrt" 
              Height="55"
              Width="80"
              Background="Transparent"
              BorderBrush="Transparent"
-             FontFamily="Segoe Script">
+             FontFamily="Segoe Script"
+             Click="OnOperatorButtonClick">
                 <Grid VerticalAlignment="Center">
                     <!-- Ordinul sus pentru radical -->
                     <TextBlock Text="2" FontSize="10" VerticalAlignment="Top" Margin="4,3,0,0"/>
@@ -719,12 +751,14 @@
             </Button>
 
             <Button Content="➗" 
+                 Name="btnDivide"
                  Height="55"
                  Width="80"
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="12">
+                 FontSize="12"
+                 Click="OnOperatorButtonClick">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -878,12 +912,14 @@
             </Button>
 
             <Button Content="✖️" 
+                 Name="btnMultiply"
                  Height="55"
                  Width="80"
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="12">
+                 FontSize="12"
+                 Click="OnOperatorButtonClick">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1037,12 +1073,14 @@
             </Button>
 
             <Button Content="➖" 
+                 Name="btnSubtract"
                  Height="55"
                  Width="80"
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="12">
+                 FontSize="12"
+                 Click="OnOperatorButtonClick">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1196,12 +1234,14 @@
             </Button>
 
             <Button Content="➕" 
+                 Name="btnAdd"
                  Height="55"
                  Width="80"
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="Segoe Script"
-                 FontSize="12">
+                 FontSize="12"
+                 Click="OnOperatorButtonClick">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1237,13 +1277,14 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,442.5,0,0">
 
-            <Button 
+            <Button Name="btnPlusMinus"
                   Height="55"
                   Width="80"
                   Background="Transparent"
                   BorderBrush="Transparent"
                   FontFamily="Segoe Script"
-                  FontSize="20">
+                  FontSize="20"
+                  Click="OnOperatorButtonClick">
                 <TextBlock FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <TextBlock.Inlines>
                         <Run Text="➕" FontSize="12" BaselineAlignment="Superscript" />
@@ -1360,13 +1401,14 @@
                 </Button.Style>
             </Button>
 
-            <Button 
+           <Button Name="btnEqual" 
                   Height="55"
                   Width="80"
                   Background="Transparent"
                   BorderBrush="Transparent"
                   FontFamily="Segoe Script"
-                  FontSize="12">
+                  FontSize="12"
+                  Click="OnOperatorButtonClick">
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -1488,7 +1530,8 @@
                 TextAlignment="Right"
                 VerticalContentAlignment="Center"
                 FontSize="22"
-                FontFamily="Segoe Script">
+                FontFamily="Segoe Script"
+                IsReadOnly="True">
                 <TextBox.Template>
                     <ControlTemplate TargetType="TextBox">
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
@@ -1506,34 +1549,34 @@
             <StackPanel Margin="0,117,0,0">
 
                 <!-- Rândul HEX -->
-                <Button x:Name="btnHex" Width="360" Height="40" Click="Button_Click" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                <Button x:Name="btnHex" Width="360" Height="40" Click="BaseButton_Click" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBlock Text="HEX" FontSize="16" Width="60" VerticalAlignment="Center"/>
-                        <TextBox x:Name="hexTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0" />
+                        <TextBlock Text="HEX" FontSize="16" Width="60" VerticalAlignment="Center" FontFamily="Segoe Script"/>
+                        <TextBox x:Name="hexTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" FontFamily="Segoe Script" BorderThickness="0" Text="0"/>
                     </StackPanel>
                 </Button>
 
                 <!-- Rândul DEC -->
-                <Button x:Name="btnDec" Width="360" Height="40" Click="Button_Click"  BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                <Button x:Name="btnDec" Width="360" Height="40" Click="BaseButton_Click" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBlock Text="DEC" FontSize="16" Width="60" VerticalAlignment="Center"/>
-                        <TextBox x:Name="decimalTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0"/>
+                        <TextBlock Text="DEC" FontSize="16" Width="60" VerticalAlignment="Center" FontFamily="Segoe Script"/>
+                        <TextBox x:Name="decimalTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" FontFamily="Segoe Script" BorderThickness="0" Text="0"/>
                     </StackPanel>
                 </Button>
 
                 <!-- Rândul OCT -->
-                <Button x:Name="btnOct" Width="360" Height="40" Click="Button_Click"  BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                <Button x:Name="btnOct" Width="360" Height="40" Click="BaseButton_Click" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBlock Text="OCT" FontSize="16" Width="60" VerticalAlignment="Center"/>
-                        <TextBox x:Name="octalTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0"/>
+                        <TextBlock Text="OCT" FontSize="16" Width="60" VerticalAlignment="Center" FontFamily="Segoe Script"/>
+                        <TextBox x:Name="octalTextBox" Width="300" Height="40" FontSize="20" FontFamily="Segoe Script" IsReadOnly="True" BorderThickness="0" Text="0" />
                     </StackPanel>
                 </Button>
 
                 <!-- Rândul BIN -->
-                <Button x:Name="btnBin" Width="360" Height="40" Click="Button_Click"  BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
+                <Button x:Name="btnBin" Width="360" Height="40" Click="BaseButton_Click" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBlock Text="BIN" FontSize="16" Width="60" VerticalAlignment="Center"/>
-                        <TextBox x:Name="binaryTextBox" Width="300" Height="40" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="0" />
+                        <TextBlock Text="BIN" FontSize="16" Width="60" VerticalAlignment="Center" FontFamily="Segoe Script"/>
+                        <TextBox x:Name="binaryTextBox" Width="300" Height="40" FontSize="20" FontFamily="Segoe Script" IsReadOnly="True" BorderThickness="0" Text="0" />
                     </StackPanel>
                 </Button>
 
@@ -1719,7 +1762,8 @@
                     Background="Transparent"
                     BorderBrush="Transparent"
                     FontSize="14"
-                    FontFamily="Segoe Script">
+                    FontFamily="Segoe Script"
+                    Click="Button_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <!-- ControlTemplate with rounded corners -->
@@ -1877,12 +1921,14 @@
                 </Button>
 
                 <Button Content="%"
+                     Name="btnPercentageP"
                      Height="38"
                      Width="64"
                      Background="Transparent"
                      BorderBrush="Transparent"
                      FontFamily="Segoe Script"
-                     FontSize="16">
+                     FontSize="16"
+                     Click="OnOperatorButtonClick">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -1916,12 +1962,14 @@
                 </Button>
 
                 <Button Content="➗" 
+                     Name="btnDivideP"
                      Height="38"
                      Width="64"
                      Background="Transparent"
                      BorderBrush="Transparent"
                      FontFamily="Segoe Script"
-                     FontSize="12">
+                     FontSize="12"
+                     Click="OnOperatorButtonClick">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -2114,12 +2162,14 @@
                 </Button>
 
                 <Button Content="✖️" 
+                     Name="btnMultiplyP"
                      Height="38"
                      Width="64"
                      Background="Transparent"
                      BorderBrush="Transparent"
                      FontFamily="Segoe Script"
-                     FontSize="12">
+                     FontSize="12"
+                     Click="OnOperatorButtonClick">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -2311,12 +2361,14 @@
                 </Button>
 
                 <Button Content="➖" 
+                     Name="btnSubtractP"
                      Height="38"
                      Width="64"
                      Background="Transparent"
                      BorderBrush="Transparent"
                      FontFamily="Segoe Script"
-                     FontSize="12">
+                     FontSize="12"
+                     Click="OnOperatorButtonClick">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -2508,12 +2560,14 @@
                 </Button>
 
                 <Button Content="➕" 
+                     Name="btnAddP"
                      Height="38"
                      Width="64"
                      Background="Transparent"
                      BorderBrush="Transparent"
                      FontFamily="Segoe Script"
-                     FontSize="12">
+                     FontSize="12"
+                     Click="OnOperatorButtonClick">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -2587,13 +2641,14 @@
                     </Button.Style>
                 </Button>
 
-                <Button 
+                <Button Name="btnPlusMinusP"
                       Height="38"
                       Width="64"
                       Background="Transparent"
                       BorderBrush="Transparent"
                       FontFamily="Segoe Script"
-                      FontSize="16">
+                      FontSize="16"
+                      Click="OnOperatorButtonClick">
                     <TextBlock FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <TextBlock.Inlines>
                             <Run Text="➕" FontSize="8" BaselineAlignment="Superscript" />
@@ -2710,13 +2765,14 @@
                     </Button.Style>
                 </Button>
 
-                <Button 
+                <Button Name="btnEqualP"
                       Height="38"
                       Width="64"
                       Background="Transparent"
                       BorderBrush="Transparent"
                       FontFamily="Segoe Script"
-                      FontSize="16">
+                      FontSize="16"
+                      Click="OnOperatorButtonClick">
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>

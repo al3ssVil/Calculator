@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -13,6 +14,10 @@ namespace Calculator
         private bool isDigitGroupingEnabled = false;
         private TextBox textBox;
 
+        private double currentValue = 0;  
+        private string lastOperator = "";  
+        private bool isNewEntry = true;
+
         public Standard(TextBox textBox)
         {
             this.textBox = textBox;
@@ -21,8 +26,26 @@ namespace Calculator
         public void HandleKeyDown()
         {
             textBox.Focus();
+
+            if (Keyboard.IsKeyDown(Key.Add) || Keyboard.IsKeyDown(Key.OemPlus)) // pentru "+"
+            {
+                HandleOperatorClick("+");
+            }
+            else if (Keyboard.IsKeyDown(Key.Subtract) || Keyboard.IsKeyDown(Key.OemMinus)) // pentru "-"
+            {
+                HandleOperatorClick("-");
+            }
+            else if (Keyboard.IsKeyDown(Key.Multiply)) // pentru "*"
+            {
+                HandleOperatorClick("*");
+            }
+            else if (Keyboard.IsKeyDown(Key.Divide) || Keyboard.IsKeyDown(Key.OemQuestion)) // pentru "/"
+            {
+                HandleOperatorClick("/");
+            }
         }
 
+        //keyboard input
         public void HandlePreviewTextInput(TextCompositionEventArgs e)
         {
             int maxLength = 9;
@@ -32,7 +55,7 @@ namespace Calculator
                 return;
             }
 
-            if (textBox.Text.StartsWith("0") && !textBox.Text.StartsWith("0."))
+            if (textBox.Text.StartsWith("0") && !textBox.Text.StartsWith("0."))//123 not 0123
             {
                 textBox.Text = textBox.Text.Substring(1);
                 textBox.Select(textBox.Text.Length, 0);
@@ -57,28 +80,32 @@ namespace Calculator
                 e.Handled = true;
             }
 
-            // Aplica gruparea dupa fiecare schimbare a textului
             if (isDigitGroupingEnabled)
             {
-                // Adauga caracterul nou in text
                 textBox.Text += e.Text;
 
-                // Aplica gruparea
                 UpdateTextBoxWithGrouping();
 
-                // Selecteaza tot textul pentru a nu pierde pozitia cursorului
+                // Select all the text to avoid losing the cursor position
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.SelectionLength = 0;
 
-                e.Handled = true; // Impiedica introducerea directa a caracterului in TextBox
+                e.Handled = true; // Prevents the direct input of the character into the TextBox.
             }
         }
-
 
         public void HandleDigitGroupingChecked(bool isChecked)
         {
             isDigitGroupingEnabled = isChecked;
-            UpdateTextBoxWithGrouping();
+            if (isChecked)
+                UpdateTextBoxWithGrouping();
+            else
+            {
+                textBox.Text = textBox.Text.Replace(",", "");
+            }
+
+            textBox.SelectionStart = textBox.Text.Length;
+            textBox.SelectionLength = 0;
         }
 
         public void UpdateTextBoxWithGrouping()
@@ -105,6 +132,13 @@ namespace Calculator
             StringBuilder grouped = new StringBuilder();
             int count = 0;
 
+            bool isNegative = input.StartsWith("-");
+            if (isNegative)
+            {
+                // Dacă este negativ, elimină semnul pentru a aplica gruparea pe partea pozitivă
+                input = input.Substring(1);
+            }
+
             for (int i = input.Length - 1; i >= 0; i--)
             {
                 char currentChar = input[i];
@@ -123,9 +157,15 @@ namespace Calculator
                 }
             }
 
+            if (isNegative)
+            {
+                grouped.Insert(0, "-");
+            }
+
             return grouped.ToString();
         }
 
+        //for delete input on the keyboard
         public void TextBox_PreviewKeyDown()
         {
               UpdateTextBoxWithGrouping();
@@ -190,6 +230,7 @@ namespace Calculator
             textBox.SelectionStart = textBox.Text.Length;
             textBox.SelectionLength = 0;
         }
+
         public void HandleDeleteKey()
         {
             if (textBox.Text.Length > 0)
@@ -205,5 +246,120 @@ namespace Calculator
                 textBox.SelectionLength = 0;
             }
         }
+
+        public void HandleOperatorClick(string operatorText)
+        {
+            double currentNumber;
+            if (double.TryParse(textBox.Text, out currentNumber))//string to double( fail or not)
+            {
+                if (isNewEntry)
+                {
+                    currentValue = currentNumber; 
+                    isNewEntry = false;
+                    textBox.Clear();
+                }
+                else
+                {
+                    PerformCalculation(currentNumber);
+                }
+
+                if (operatorText == "^2" || operatorText == "sqrt" || operatorText == "+/-" || operatorText == "1/x")
+                {
+                    PerformUnaryCalculation(operatorText); 
+                }
+                else
+                {
+                    lastOperator = operatorText;
+                }
+            }
+        }
+
+        public void PerformCalculation(double secondOperand)
+        {
+            switch (lastOperator)
+            {
+                case "+":
+                    currentValue += secondOperand;
+                    break;
+                case "-":
+                    currentValue -= secondOperand;
+                    break;
+                case "*":
+                    currentValue *= secondOperand;
+                    break;
+                case "/":
+                    if (secondOperand != 0)
+                    {
+                        currentValue /= secondOperand;
+                    }
+                    else
+                    {
+                        textBox.Text = "Error";
+                        return;
+                    }
+                    break;
+                case "%":
+                    currentValue %= secondOperand;
+                    break;
+                case "=":
+                     break;
+                default:
+                    break;
+            }
+            currentValue = Math.Round(currentValue, 9);
+            //MessageBox.Show($"Value:{currentValue}");
+            textBox.Text = currentValue.ToString();
+            textBox.Text = ApplyGrouping(currentValue.ToString());
+            isNewEntry = true;
+        }
+
+        public void PerformUnaryCalculation(string operatorText)
+        {
+            switch (operatorText)
+            {
+                case "^2":
+                    currentValue = Math.Pow(currentValue, 2);  
+                    break;
+                case "sqrt":
+                    if (currentValue >= 0)
+                    {
+                        currentValue = Math.Sqrt(currentValue);  
+                    }
+                    else
+                    {
+                        textBox.Text = "Error";  
+                        return;
+                    }
+                    break;
+                case "+/-":
+                    currentValue = -currentValue; 
+                    break;
+                case "1/x":
+                    if (currentValue != 0)
+                    {
+                        currentValue = 1 / currentValue;  
+                    }
+                    else
+                    {
+                        textBox.Text = "Error"; 
+                        return;
+                    }
+                    break;
+            }
+            currentValue = Math.Round(currentValue, 9);
+            //MessageBox.Show($"Value:{currentValue}");  
+            textBox.Text = currentValue.ToString();
+            textBox.Text = ApplyGrouping(currentValue.ToString());
+            isNewEntry = true;
+        }
+
+        public void ClearResult()
+        {
+            textBox.Clear(); 
+            textBox.Text = "0";
+            currentValue = 0; 
+            isNewEntry = true;
+        }
+
     }
 }

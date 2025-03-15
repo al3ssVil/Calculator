@@ -12,11 +12,16 @@ namespace Calculator
     public class Programmer
     {
         private bool isDigitGroupingEnabled = false;
+
         private TextBox textBox;
-        public TextBox hexTextBox { get; set; }
-        public TextBox decimalTextBox { get; set; }
-        public TextBox octalTextBox { get; set; }
-        public TextBox binaryTextBox { get; set; }
+        public TextBox hexTextBox;
+        public TextBox decimalTextBox;
+        public TextBox octalTextBox;
+        public TextBox binaryTextBox;
+
+        private double currentValue = 0;
+        private string lastOperator = "";
+        private bool isNewEntry = true;
 
         public Programmer(TextBox textBox, TextBox hex, TextBox dec, TextBox oct, TextBox bin)
         {
@@ -30,17 +35,80 @@ namespace Calculator
         public void HandleKeyDown()
         {
             textBox.Focus();
-        }
-        private void UpdateAllBases(string value)
-        {
-            if (int.TryParse(value, out int decimalValue))
+
+            if (Keyboard.IsKeyDown(Key.Add) || Keyboard.IsKeyDown(Key.OemPlus)) 
             {
-                hexTextBox.Text = decimalValue.ToString("X");
-                decimalTextBox.Text = decimalValue.ToString();
-                octalTextBox.Text = Convert.ToString(decimalValue, 8);
-                binaryTextBox.Text = Convert.ToString(decimalValue, 2);
+                HandleOperatorClick("+");
+            }
+            else if (Keyboard.IsKeyDown(Key.Subtract) || Keyboard.IsKeyDown(Key.OemMinus)) 
+            {
+                HandleOperatorClick("-");
+            }
+            else if (Keyboard.IsKeyDown(Key.Multiply)) 
+            {
+                HandleOperatorClick("*");
+            }
+            else if (Keyboard.IsKeyDown(Key.Divide))
+            {
+                HandleOperatorClick("/");
             }
         }
+
+        public void UpdateAllBases(string value, int baseSelected)
+        {
+            try
+            {
+                value = value.Replace(",", "");
+                //MessageBox.Show($"Valoare introdusă: {value}, Baza selectată: {baseSelected}");
+                int decimalValue = 0;
+
+                if (baseSelected == 10)
+                {
+                    decimalValue = int.Parse(value);  
+                }
+                else
+                {
+                    switch (baseSelected)
+                    {
+                        case 16: // HEX
+                            decimalValue = Convert.ToInt32(value, 16);
+                            break;
+                        case 8: // OCT
+                            decimalValue = Convert.ToInt32(value, 8);
+                            break;
+                        case 2: // BIN
+                            decimalValue = Convert.ToInt32(value, 2);
+                            break;
+                        default:
+                            decimalValue = 0;
+                            break;
+                    }
+                }
+
+                //MessageBox.Show($"Valoarea convertită: {decimalValue}");
+
+                hexTextBox.Text = decimalValue.ToString("X");  // HEX
+                decimalTextBox.Text = decimalValue.ToString();  // DEC
+                octalTextBox.Text = Convert.ToString(decimalValue, 8);  // OCT
+                binaryTextBox.Text = Convert.ToString(decimalValue, 2);  // BIN
+
+                //MessageBox.Show($"HEX: {hexTextBox.Text}, DEC: {decimalTextBox.Text}, OCT: {octalTextBox.Text}, BIN: {binaryTextBox.Text}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Eroare la conversie: {ex.Message}");
+                ResetTextBoxes();
+            }
+        }
+
+        public void ResetTextBoxes()
+        {
+            hexTextBox.Text = "0";
+            decimalTextBox.Text = "0";
+            octalTextBox.Text = "0";
+            binaryTextBox.Text = "0";
+        }
+
         public void HandlePreviewTextInput(TextCompositionEventArgs e)
         {
             int maxLength = 12;
@@ -77,35 +145,29 @@ namespace Calculator
 
             if (isDigitGroupingEnabled)
             {
+                textBox.Text += e.Text;
+
                 UpdateTextBoxWithGrouping();
-            }
-        }
 
-        public void HandlePointButtonClick(Button button)
-        {
-            if (button == null || textBox == null) return;
-
-            // Dacă textBox-ul este gol sau conține doar "0", adăugăm "0."
-            if (textBox.Text.Length == 0 || textBox.Text == "0")
-            {
-                textBox.Text = "0.";
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.SelectionLength = 0;
-            }
 
-            // Dacă textBox-ul nu conține un punct, adăugăm un punct
-            if (!textBox.Text.Contains("."))
-            {
-                textBox.AppendText(".");
-                textBox.SelectionStart = textBox.Text.Length;
-                textBox.SelectionLength = 0;
+                e.Handled = true; 
             }
         }
 
         public void HandleDigitGroupingChecked(bool isChecked)
         {
             isDigitGroupingEnabled = isChecked;
-            UpdateTextBoxWithGrouping();
+            if (isChecked)
+                UpdateTextBoxWithGrouping();
+            else
+            {
+                textBox.Text = textBox.Text.Replace(",", "");
+            }
+
+            textBox.SelectionStart = textBox.Text.Length;
+            textBox.SelectionLength = 0;
         }
 
         public void UpdateTextBoxWithGrouping()
@@ -132,7 +194,14 @@ namespace Calculator
             StringBuilder grouped = new StringBuilder();
             int count = 0;
 
-            for (int i = input.Length; i >= 0; i--)
+            bool isNegative = input.StartsWith("-");
+            if (isNegative)
+            {
+                // Dacă este negativ, elimină semnul pentru a aplica gruparea pe partea pozitivă
+                input = input.Substring(1);
+            }
+
+            for (int i = input.Length - 1; i >= 0; i--)
             {
                 char currentChar = input[i];
 
@@ -150,6 +219,11 @@ namespace Calculator
                 }
             }
 
+            if (isNegative)
+            {
+                grouped.Insert(0, "-");
+            }
+
             return grouped.ToString();
         }
 
@@ -157,33 +231,22 @@ namespace Calculator
         {
             UpdateTextBoxWithGrouping();
         }
-        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            // Verificăm dacă tasta apăsată este Backspace sau Delete
-            if (e.Key == Key.Back || e.Key == Key.Delete)
-            {
-                // După ce se șterge un caracter, actualizăm gruparea
-                UpdateTextBoxWithGrouping();
-            }
-        }
+
         private bool IsValidCharacter(string character)
         {
-            // Verifică dacă caracterul este un digit sau punct
             if (!char.IsDigit(character, 0) && character != ".")
             {
                 return false;
             }
 
-            // Verifică dacă textul conține deja un punct
             if (character == "." && textBox.Text.Contains("."))
             {
-                return false;  // Previne adăugarea unui alt punct
+                return false;  
             }
 
-            // Verifică dacă numărul de caractere depășește limita maximă
             if (textBox.Text.Length >= 9)
             {
-                return false;  // Previne adăugarea mai multor caractere
+                return false; 
             }
 
             return true;
@@ -191,153 +254,44 @@ namespace Calculator
 
         public void HandleButtonClick(string buttonText)
         {
-            // Verifică dacă caracterul este valid
             if (!IsValidCharacter(buttonText))
             {
-                return;  // Dacă nu este valid, nu facem nimic
+                return; 
             }
 
-            // Dacă este un punct și textul este gol, adăugăm "0."
             if (buttonText == "." && textBox.Text.Length == 0)
             {
-                textBox.Text = "0.";  // Dacă este primul caracter, adăugăm 0.
+                textBox.Text = "0.";  
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.SelectionLength = 0;
                 return;
             }
 
-            // Dacă este un punct și textul conține deja un punct, nu adăugăm alt punct
             if (buttonText == "." && textBox.Text.Contains("."))
             {
-                return;  // Previne adăugarea unui alt punct
+                return;  
             }
 
-            // Dacă textul începe cu "0" și nu are punct, îl eliminăm
             if (textBox.Text.StartsWith("0") && !textBox.Text.StartsWith("0.") && buttonText != ".")
             {
-                textBox.Text = textBox.Text.Substring(1);  // Elimină "0" de la început
-                textBox.Select(textBox.Text.Length, 0);  // Plasează cursorul la final
+                textBox.Text = textBox.Text.Substring(1); 
+                textBox.Select(textBox.Text.Length, 0);
             }
 
-            // Dacă textul are mai puțin de 9 caractere, adăugăm butonul apăsat
             if (textBox.Text.Length < 12)
             {
-                textBox.Text += buttonText;  // Adăugăm caracterul la final
+                textBox.Text += buttonText; 
             }
 
-            // Aplică gruparea numerelor dacă este activată
             if (isDigitGroupingEnabled)
             {
-                UpdateTextBoxWithGrouping();  // Grupăm numerele, dacă e activat
+                UpdateTextBoxWithGrouping();
             }
 
-            // După adăugarea textului, poziționează cursorul la final
             textBox.SelectionStart = textBox.Text.Length;
             textBox.SelectionLength = 0;
         }
-        public void TextBox_TextChanged(object sender, EventArgs e)
-        {
-            TextBox? changedTextBox = sender as TextBox;
 
-            if (changedTextBox != null)
-            {
-                string input = changedTextBox.Text;
-
-                // Dacă câmpul este gol, considerăm valoarea "0"
-                if (string.IsNullOrEmpty(input))
-                {
-                    input = "0"; // dacă nu s-a introdus nimic, punem 0
-                }
-
-                // Aici determinăm care TextBox a fost modificat
-                if (changedTextBox == hexTextBox)
-                {
-                    ConvertFromHex(input);
-                }
-                else if (changedTextBox == decimalTextBox)
-                {
-                    ConvertFromDecimal(input);
-                }
-                else if (changedTextBox == octalTextBox)
-                {
-                    ConvertFromOctal(input);
-                }
-                else if (changedTextBox == binaryTextBox)
-                {
-                    ConvertFromBinary(input);
-                }
-            }
-        }
-
-        // Conversie din HEX în celelalte baze
-        private void ConvertFromHex(string hexValue)
-        {
-            try
-            {
-                int decimalValue = Convert.ToInt32(hexValue, 16); // Convertim HEX în DEC
-                decimalTextBox.Text = decimalValue.ToString();  // Actualizăm DEC
-                octalTextBox.Text = Convert.ToString(decimalValue, 8); // Actualizăm OCT
-                binaryTextBox.Text = Convert.ToString(decimalValue, 2); // Actualizăm BIN
-            }
-            catch
-            {
-                decimalTextBox.Text = "0";
-                octalTextBox.Text = "0";
-                binaryTextBox.Text = "0";
-            }
-        }
-
-        // Conversie din DEC în celelalte baze
-        private void ConvertFromDecimal(string decValue)
-        {
-            try
-            {
-                int decimalNumber = int.Parse(decValue);
-                hexTextBox.Text = decimalNumber.ToString("X");  // Convertim DEC în HEX
-                octalTextBox.Text = Convert.ToString(decimalNumber, 8); // Convertim DEC în OCT
-                binaryTextBox.Text = Convert.ToString(decimalNumber, 2); // Convertim DEC în BIN
-            }
-            catch
-            {
-                hexTextBox.Text = "0";
-                octalTextBox.Text = "0";
-                binaryTextBox.Text = "0";
-            }
-        }
-
-        private void ConvertFromOctal(string octValue)
-        {
-            try
-            {
-                int decimalValue = Convert.ToInt32(octValue, 8); // Convertim OCT în DEC
-                hexTextBox.Text = decimalValue.ToString("X");  // Actualizăm HEX
-                decimalTextBox.Text = decimalValue.ToString(); // Actualizăm DEC
-                binaryTextBox.Text = Convert.ToString(decimalValue, 2); // Actualizăm BIN
-            }
-            catch
-            {
-                hexTextBox.Text = "0";
-                decimalTextBox.Text = "0";
-                binaryTextBox.Text = "0";
-            }
-        }
-
-        private void ConvertFromBinary(string binValue)
-        {
-            try
-            {
-                int decimalValue = Convert.ToInt32(binValue, 2); // Convertim BIN în DEC
-                hexTextBox.Text = decimalValue.ToString("X"); // Actualizăm HEX
-                decimalTextBox.Text = decimalValue.ToString(); // Actualizăm DEC
-                octalTextBox.Text = Convert.ToString(decimalValue, 8); // Actualizăm OCT
-            }
-            catch
-            {
-                hexTextBox.Text = "0";
-                decimalTextBox.Text = "0";
-                octalTextBox.Text = "0";
-            }
-        }
         public void HandleDeleteKey()
         {
             if (textBox.Text.Length > 0)
@@ -353,5 +307,98 @@ namespace Calculator
                 textBox.SelectionLength = 0;
             }
         }
+
+        public void HandleOperatorClick(string operatorText)
+        {
+            double currentNumber;
+            if (double.TryParse(textBox.Text, out currentNumber))
+            {
+                if (isNewEntry)
+                {
+                    currentValue = currentNumber;
+                    isNewEntry = false;
+                    textBox.Clear();
+                }
+                else
+                {
+                    PerformCalculation(currentNumber);
+                }
+
+                if (operatorText == "+/-" )
+                {
+                    PerformUnaryCalculation(operatorText);
+                    textBox.Text = currentValue.ToString();
+                    isNewEntry = true;
+                }
+                else
+                {
+                    lastOperator = operatorText;
+                }
+            }
+        }
+
+        public void PerformCalculation(double secondOperand)
+        {
+            switch (lastOperator)
+            {
+                case "+":
+                    currentValue += secondOperand;
+                    break;
+                case "-":
+                    currentValue -= secondOperand;
+                    break;
+                case "*":
+                    currentValue *= secondOperand;
+                    break;
+                case "/":
+                    if (secondOperand != 0)
+                    {
+                        currentValue /= secondOperand;
+                    }
+                    else
+                    {
+                        textBox.Text = "Error";
+                        return;
+                    }
+                    break;
+                case "%":
+                    currentValue %= secondOperand;
+                    break;
+                case "=":
+                    break;
+                default:
+                    break;
+            }
+            currentValue = Math.Round(currentValue, 9);
+            //MessageBox.Show($"Value:{currentValue}");
+            textBox.Text = currentValue.ToString();
+            UpdateAllBases(currentValue.ToString(), 10);
+            textBox.Text = ApplyGrouping(currentValue.ToString());
+            isNewEntry = true;
+        }
+
+        public void PerformUnaryCalculation(string operatorText)
+        {
+            switch (operatorText)
+            {
+                
+                case "+/-":
+                    currentValue = -currentValue;
+                    break;
+            }
+            currentValue = Math.Round(currentValue, 9);
+            //MessageBox.Show($"Value:{currentValue}");  
+            textBox.Text = currentValue.ToString();
+            textBox.Text = ApplyGrouping(currentValue.ToString());
+        }
+
+        public void ClearResult()
+        {
+            textBox.Clear(); 
+            textBox.Text = "0"; 
+            currentValue = 0; 
+            isNewEntry = true; 
+        }
+
     }
 }

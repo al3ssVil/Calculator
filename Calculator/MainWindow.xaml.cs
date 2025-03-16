@@ -21,7 +21,7 @@ namespace Calculator
             this.KeyDown += (s, e) => programmerMode.HandleKeyDown();
 
             this.PreviewKeyDown += (s, e) => HandleDeleteKey(e);
-            this.PreviewKeyDown += (s, e) => HandleEnterKey(e); 
+            this.PreviewKeyDown += (s, e) => HandleEnterKey(e);
             this.PreviewKeyDown += (s, e) => HandleEscKey(e);
             LoadLastUsedMode();
             UpdateBasesBasedOnSelectedBase();
@@ -32,11 +32,13 @@ namespace Calculator
             string lastUsedMode = Properties.Settings.Default.lastUsedMode;
             bool isDigitGroupingEnabled = Properties.Settings.Default.DigitGroupingEnabled;
 
+            baseSelected = Properties.Settings.Default.LastUsedBase;
+
             CheckBox? checkBox = FindName("DigitGroupingCheckBox") as CheckBox;
 
             if (checkBox != null)
             {
-                checkBox.IsChecked = isDigitGroupingEnabled; 
+                checkBox.IsChecked = isDigitGroupingEnabled;
             }
 
             if (lastUsedMode == "Programmer")
@@ -50,7 +52,10 @@ namespace Calculator
 
             standardMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
             programmerMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
+
+            UpdateBasesBasedOnSelectedBase();
         }
+
         private void SaveLastUsedMode(string mode)
         {
             Properties.Settings.Default.lastUsedMode = mode;
@@ -62,7 +67,7 @@ namespace Calculator
                 Properties.Settings.Default.DigitGroupingEnabled = checkBox.IsChecked == true;
             }
 
-            Properties.Settings.Default.Save(); 
+            Properties.Settings.Default.Save();
 
             bool isDigitGroupingEnabled = Properties.Settings.Default.DigitGroupingEnabled;
 
@@ -76,9 +81,9 @@ namespace Calculator
             if (StandardModeGrid.Visibility == Visibility.Visible)
             {
                 standardMode.HandlePreviewTextInput(e);
-                if (Properties.Settings.Default.DigitGroupingEnabled) 
+                if (Properties.Settings.Default.DigitGroupingEnabled)
                 {
-                    standardMode.UpdateTextBoxWithGrouping(); 
+                    standardMode.UpdateTextBoxWithGrouping();
                 }
             }
             else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
@@ -97,7 +102,7 @@ namespace Calculator
             bool isChecked = (sender as CheckBox)?.IsChecked == true;
 
             Properties.Settings.Default.DigitGroupingEnabled = isChecked;
-            Properties.Settings.Default.Save();  
+            Properties.Settings.Default.Save();
 
             standardMode.HandleDigitGroupingChecked(isChecked);
             programmerMode.HandleDigitGroupingChecked(isChecked);
@@ -183,7 +188,7 @@ namespace Calculator
 
         //delete keyboard
         private void HandleDeleteKey(KeyEventArgs e)
-        { 
+        {
             if (e.Key == Key.Delete || e.Key == Key.Back)
             {
 
@@ -216,6 +221,9 @@ namespace Calculator
                 else if (clickedButton == btnBin)
                     baseSelected = 2;
 
+                Properties.Settings.Default.LastUsedBase = baseSelected;
+                Properties.Settings.Default.Save();
+
                 MessageBox.Show($"Butonul:{clickedButton.Name}, baza:{baseSelected}");
                 UpdateBasesBasedOnSelectedBase();
             }
@@ -223,12 +231,13 @@ namespace Calculator
 
         private void UpdateBasesBasedOnSelectedBase()
         {
-            string inputValue = textBoxProgrammer.Text; 
+            string inputValue = textBoxProgrammer.Text;
 
             //valid
             if (string.IsNullOrWhiteSpace(inputValue))
             {
-                programmerMode.ResetTextBoxes();    
+                programmerMode.ResetTextBoxes();
+                programmerMode.baseNumber = baseSelected;
                 return;
             }
 
@@ -273,14 +282,14 @@ namespace Calculator
                     operatorText = "%";
                     break;
                 case "btnDivideX":
-                    operatorText = "1/x"; 
+                    operatorText = "1/x";
                     break;
                 case "btnSquare":
                     operatorText = "^2";
                     break;
 
                 case "btnSqrt":
-                    operatorText = "sqrt"; 
+                    operatorText = "sqrt";
                     break;
                 case "btnPlusMinus":
                 case "btnPlusMinusP":
@@ -288,7 +297,7 @@ namespace Calculator
                     break;
                 case "btnEqual":
                 case "btnEqualP":
-                    operatorText = "="; 
+                    operatorText = "=";
                     break;
                 default:
                     break;
@@ -327,11 +336,11 @@ namespace Calculator
             {
                 if (StandardModeGrid.Visibility == Visibility.Visible)
                 {
-                    standardMode.ClearResult(); 
+                    standardMode.ClearResult();
                 }
                 else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
                 {
-                    programmerMode.ClearResult(); 
+                    programmerMode.ClearResult();
                 }
             }
         }
@@ -344,7 +353,7 @@ namespace Calculator
             {
                 if (string.IsNullOrEmpty(textBoxStandard.SelectedText))
                 {
-                    textBoxStandard.SelectAll(); 
+                    textBoxStandard.SelectAll();
                 }
 
                 textToCut = textBoxStandard.SelectedText;
@@ -371,8 +380,10 @@ namespace Calculator
                 else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
                 {
                     textBoxProgrammer.SelectedText = string.Empty;
+                    UpdateBasesBasedOnSelectedBase();
                 }
             }
+
         }
 
         private void CopyAction(object sender, RoutedEventArgs e)
@@ -409,15 +420,49 @@ namespace Calculator
             {
                 if (StandardModeGrid.Visibility == Visibility.Visible)
                 {
-                    textBoxStandard.SelectedText = clipboardText;
+                    string existingText = textBoxStandard.Text;
+
+                    textBoxStandard.Text = existingText + clipboardText;
+
+                    textBoxStandard.SelectionStart = textBoxStandard.Text.Length;
+                    textBoxStandard.SelectionLength = 0;
+                    standardMode.UpdateTextBoxWithGrouping();
                 }
-                else
-                    if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+                else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
                 {
-                    textBoxProgrammer.SelectedText = clipboardText;
+                    string existingText = textBoxProgrammer.Text;
+                    textBoxProgrammer.Text = existingText + clipboardText;
+
+                    textBoxProgrammer.SelectionStart = textBoxProgrammer.Text.Length;
+                    textBoxProgrammer.SelectionLength = 0;
+                    programmerMode.UpdateTextBoxWithGrouping();
+                    UpdateBasesBasedOnSelectedBase();
                 }
             }
         }
 
+        private void C_Button(object sender, RoutedEventArgs e)
+        {
+            if (StandardModeGrid.Visibility == Visibility.Visible)
+            {
+                standardMode.ClearResult();
+            }
+            else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+            {
+                programmerMode.ClearResult();
+            }
+        }
+
+        private void CE_Button(object sender, RoutedEventArgs e)
+        {
+            if (StandardModeGrid.Visibility == Visibility.Visible)
+            {
+                standardMode.ClearEntry();
+            }
+            else if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+            {
+                programmerMode.ClearEntry();
+            }
+        }
     }
 }

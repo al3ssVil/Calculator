@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Calculator
 {
@@ -22,6 +23,8 @@ namespace Calculator
         private double currentValue = 0;
         private string lastOperator = "";
         private bool isNewEntry = true;
+
+        public int baseNumber;
 
         public Programmer(TextBox textBox, TextBox hex, TextBox dec, TextBox oct, TextBox bin)
         {
@@ -124,7 +127,7 @@ namespace Calculator
                 textBox.Select(textBox.Text.Length, 0);
             }
 
-            if (!char.IsDigit(e.Text, 0) && e.Text[0] != '.')
+            if (!IsValidCharacter(e.Text))
             {
                 e.Handled = true;
                 return;
@@ -234,11 +237,6 @@ namespace Calculator
 
         private bool IsValidCharacter(string character)
         {
-            if (!char.IsDigit(character, 0) && character != ".")
-            {
-                return false;
-            }
-
             if (character == "." && textBox.Text.Contains("."))
             {
                 return false;  
@@ -247,6 +245,26 @@ namespace Calculator
             if (textBox.Text.Length >= 9)
             {
                 return false; 
+            }
+
+            if (baseNumber == 2)
+            {
+                return character == "0" || character == "1";
+            }
+            // Dacă baza este octală (baza 8), permitem doar caracterele 0-7
+            else if (baseNumber == 8)
+            {
+                return "01234567".Contains(character);
+            }
+            // Dacă baza este zecimală (baza 10), permitem doar caracterele 0-9
+            else if (baseNumber == 10)
+            {
+                return "0123456789".Contains(character);
+            }
+            // Dacă baza este hexazecimală (baza 16), permitem caracterele 0-9 și A-F
+            else if (baseNumber == 16)
+            {
+                return "0123456789ABCDEFabcdef".Contains(character.ToUpper());
             }
 
             return true;
@@ -310,8 +328,10 @@ namespace Calculator
 
         public void HandleOperatorClick(string operatorText)
         {
-            double currentNumber;
-            if (double.TryParse(textBox.Text, out currentNumber))
+            double currentNumber = Convert.ToDouble(decimalTextBox.Text);
+            //MessageBox.Show($"Numar in baza 10 curent:{currentNumber}");
+
+            if (double.TryParse(decimalTextBox.Text, out currentNumber))
             {
                 if (isNewEntry)
                 {
@@ -327,7 +347,7 @@ namespace Calculator
                 if (operatorText == "+/-" )
                 {
                     PerformUnaryCalculation(operatorText);
-                    textBox.Text = currentValue.ToString();
+                    decimalTextBox.Text = currentValue.ToString();
                     isNewEntry = true;
                 }
                 else
@@ -335,6 +355,7 @@ namespace Calculator
                     lastOperator = operatorText;
                 }
             }
+            //MessageBox.Show($"Numar in baza 10 curent:{currentNumber}");
         }
 
         public void PerformCalculation(double secondOperand)
@@ -371,9 +392,15 @@ namespace Calculator
             }
             currentValue = Math.Round(currentValue, 9);
             //MessageBox.Show($"Value:{currentValue}");
-            textBox.Text = currentValue.ToString();
             UpdateAllBases(currentValue.ToString(), 10);
-            textBox.Text = ApplyGrouping(currentValue.ToString());
+            if (baseNumber == 2)
+                textBox.Text = binaryTextBox.Text;
+            if (baseNumber == 8)
+                textBox.Text = octalTextBox.Text;
+            if (baseNumber == 10)
+                textBox.Text = decimalTextBox.Text;
+            if(baseNumber == 16)
+                textBox.Text = hexTextBox.Text;
             isNewEntry = true;
         }
 
@@ -387,9 +414,16 @@ namespace Calculator
                     break;
             }
             currentValue = Math.Round(currentValue, 9);
-            //MessageBox.Show($"Value:{currentValue}");  
-            textBox.Text = currentValue.ToString();
-            textBox.Text = ApplyGrouping(currentValue.ToString());
+            //MessageBox.Show($"Value:{currentValue}");
+            UpdateAllBases(currentValue.ToString(), 10);
+            if (baseNumber == 2)
+                textBox.Text = binaryTextBox.Text;
+            if (baseNumber == 8)
+                textBox.Text = octalTextBox.Text;
+            if (baseNumber == 10)
+                textBox.Text = decimalTextBox.Text;
+            if (baseNumber == 16)
+                textBox.Text = hexTextBox.Text;
         }
 
         public void ClearResult()
@@ -397,7 +431,14 @@ namespace Calculator
             textBox.Clear(); 
             textBox.Text = "0"; 
             currentValue = 0; 
-            isNewEntry = true; 
+            isNewEntry = true;
+            UpdateAllBases("0", baseNumber);
+        }
+
+        public void ClearEntry()
+        {
+            textBox.Text = "0";
+            UpdateAllBases("0", baseNumber);
         }
 
     }

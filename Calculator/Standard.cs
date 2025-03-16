@@ -361,5 +361,9 @@ namespace Calculator
             isNewEntry = true;
         }
 
+        public void ClearEntry()
+        {
+            textBox.Text = "0";  
+        }
     }
 }

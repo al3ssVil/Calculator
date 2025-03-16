@@ -213,13 +213,26 @@ namespace Calculator
             if (clickedButton != null)
             {
                 if (clickedButton == btnHex)
+                {
                     baseSelected = 16;
+                    textBoxProgrammer.Text = hexTextBox.Text;
+                }
                 else if (clickedButton == btnDec)
+                {
                     baseSelected = 10;
+                    textBoxProgrammer.Text = decimalTextBox.Text;
+                }
                 else if (clickedButton == btnOct)
+                {
                     baseSelected = 8;
+                    textBoxProgrammer.Text = octalTextBox.Text;
+                }
                 else if (clickedButton == btnBin)
+                {
                     baseSelected = 2;
+                    textBoxProgrammer.Text=binaryTextBox.Text;
+                }
+                programmerMode.baseNumber= baseSelected;
 
                 Properties.Settings.Default.LastUsedBase = baseSelected;
                 Properties.Settings.Default.Save();
@@ -231,6 +244,7 @@ namespace Calculator
 
         private void UpdateBasesBasedOnSelectedBase()
         {
+
             string inputValue = textBoxProgrammer.Text;
 
             //valid

@@ -1630,13 +1630,14 @@
 
                 </Button>
 
-                <Button Content="«" 
+                <Button Content="NOT" 
                     Height="38"
                     Width="64"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    FontSize="20"
-                    FontFamily="Segoe Script">
+                    FontSize="16"
+                    FontFamily="Segoe Script"
+                    Click="OnNotButtonClick">
                     <Button.Style>
                         <Style TargetType="Button">
                             <!-- ControlTemplate with rounded corners -->

@@ -39,15 +39,15 @@ namespace Calculator
         {
             textBox.Focus();
 
-            if (Keyboard.IsKeyDown(Key.Add) || Keyboard.IsKeyDown(Key.OemPlus)) 
+            if (Keyboard.IsKeyDown(Key.Add) || Keyboard.IsKeyDown(Key.OemPlus))
             {
                 HandleOperatorClick("+");
             }
-            else if (Keyboard.IsKeyDown(Key.Subtract) || Keyboard.IsKeyDown(Key.OemMinus)) 
+            else if (Keyboard.IsKeyDown(Key.Subtract) || Keyboard.IsKeyDown(Key.OemMinus))
             {
                 HandleOperatorClick("-");
             }
-            else if (Keyboard.IsKeyDown(Key.Multiply)) 
+            else if (Keyboard.IsKeyDown(Key.Multiply))
             {
                 HandleOperatorClick("*");
             }
@@ -67,7 +67,7 @@ namespace Calculator
 
                 if (baseSelected == 10)
                 {
-                    decimalValue = int.Parse(value);  
+                    decimalValue = int.Parse(value);
                 }
                 else
                 {
@@ -155,7 +155,7 @@ namespace Calculator
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.SelectionLength = 0;
 
-                e.Handled = true; 
+                e.Handled = true;
             }
         }
 
@@ -239,12 +239,12 @@ namespace Calculator
         {
             if (character == "." && textBox.Text.Contains("."))
             {
-                return false;  
+                return false;
             }
 
             if (textBox.Text.Length >= 9)
             {
-                return false; 
+                return false;
             }
 
             if (baseNumber == 2)
@@ -274,12 +274,12 @@ namespace Calculator
         {
             if (!IsValidCharacter(buttonText))
             {
-                return; 
+                return;
             }
 
             if (buttonText == "." && textBox.Text.Length == 0)
             {
-                textBox.Text = "0.";  
+                textBox.Text = "0.";
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.SelectionLength = 0;
                 return;
@@ -287,18 +287,18 @@ namespace Calculator
 
             if (buttonText == "." && textBox.Text.Contains("."))
             {
-                return;  
+                return;
             }
 
             if (textBox.Text.StartsWith("0") && !textBox.Text.StartsWith("0.") && buttonText != ".")
             {
-                textBox.Text = textBox.Text.Substring(1); 
+                textBox.Text = textBox.Text.Substring(1);
                 textBox.Select(textBox.Text.Length, 0);
             }
 
             if (textBox.Text.Length < 12)
             {
-                textBox.Text += buttonText; 
+                textBox.Text += buttonText;
             }
 
             if (isDigitGroupingEnabled)
@@ -344,7 +344,7 @@ namespace Calculator
                     PerformCalculation(currentNumber);
                 }
 
-                if (operatorText == "+/-" )
+                if (operatorText == "+/-")
                 {
                     PerformUnaryCalculation(operatorText);
                     decimalTextBox.Text = currentValue.ToString();
@@ -399,7 +399,7 @@ namespace Calculator
                 textBox.Text = octalTextBox.Text;
             if (baseNumber == 10)
                 textBox.Text = decimalTextBox.Text;
-            if(baseNumber == 16)
+            if (baseNumber == 16)
                 textBox.Text = hexTextBox.Text;
             isNewEntry = true;
         }
@@ -408,7 +408,7 @@ namespace Calculator
         {
             switch (operatorText)
             {
-                
+
                 case "+/-":
                     currentValue = -currentValue;
                     break;
@@ -428,9 +428,9 @@ namespace Calculator
 
         public void ClearResult()
         {
-            textBox.Clear(); 
-            textBox.Text = "0"; 
-            currentValue = 0; 
+            textBox.Clear();
+            textBox.Text = "0";
+            currentValue = 0;
             isNewEntry = true;
             UpdateAllBases("0", baseNumber);
         }
@@ -441,5 +441,33 @@ namespace Calculator
             UpdateAllBases("0", baseNumber);
         }
 
+        public void HandleLogicalOperation(string operatorText)
+        {
+            try
+            {
+                string sanitizedInput = textBox.Text.Replace(",", "");
+
+                if (operatorText == "NOT")
+                {
+                    int value = Convert.ToInt32(sanitizedInput, 2);
+
+                    //8 bit
+                    int result = ~value & 0xFF;
+
+                    string binaryResult = Convert.ToString(result, 2).PadLeft(8, '0');
+
+                    binaryTextBox.Text = binaryResult;
+                    decimalTextBox.Text = result.ToString();
+                    octalTextBox.Text = Convert.ToString(result, 8);
+                    hexTextBox.Text = Convert.ToString(result, 16).ToUpper();
+
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Eroare: " + ex.Message);
+            }
+        }
     }
 }

@@ -478,5 +478,11 @@ namespace Calculator
                 programmerMode.ClearEntry();
             }
         }
+
+        private void OnNotButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (baseSelected == 2)
+                programmerMode.HandleLogicalOperation("NOT");
+        }
     }
 }

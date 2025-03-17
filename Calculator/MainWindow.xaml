@@ -14,7 +14,7 @@
                 
                 <StackPanel Orientation="Horizontal">
                     
-                    <Button Content="🛠️" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1" Click="Settings">
+                    <Button Content="🛠️" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="40" Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1" Click="Settings" Margin="5,5,0,0">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Template">
@@ -39,10 +39,10 @@
                             </Style>
                         </Button.Style>
                     </Button>
+
+                    <Menu Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1"  Margin="0,5,0,0">
                     
-                    <Menu Background="Transparent" BorderBrush="Transparent" BorderThickness="2" Opacity="1">
-                    
-                           <MenuItem Header="File" Height="40" >
+                           <MenuItem Header="File" Height="38" >
                         
                         <MenuItem Header="Cut" Click="CutAction"/>
                         <MenuItem Header="Copy" Click="CopyAction"/>
@@ -50,7 +50,7 @@
                       
                             </MenuItem>
 
-                            <MenuItem Header="Help" Height="40">
+                            <MenuItem Header="Help" Height="38">
                     
                         <MenuItem Header="About" Click="HelpMode"/>
                 
@@ -68,8 +68,66 @@
             </StackPanel>
 
     </Grid>
-    
-    <Grid x:Name="StandardModeGrid" >
+ 
+        
+    <Grid x:Name="MemoryPanel" Background="Gray" Width="220" HorizontalAlignment="Right" VerticalAlignment="Stretch" Visibility="Collapsed" Panel.ZIndex="1">
+
+            <StackPanel Background="Gray" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0" Width="220" Height="540">
+
+                <Button Content="💾"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Top" 
+                     Height="40" 
+                     Width="40" 
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     BorderThickness="2"
+                     Opacity="1" 
+                     Margin="0,5,5,0"
+                     Click="ToggleMemoryPanel_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="Border" 
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <TextBlock Text="Memorie" FontWeight="Bold" FontSize="16" TextAlignment="Center" Margin="0,5,0,10"/>
+                
+                <ListBox x:Name="MemoryListBox" Height="360" Width="200" BorderBrush="Gray"/>
+
+                <Button Content="Șterge Memoria" Height="40" Width="200" Background="LightCoral" BorderBrush="Gray" Click="MemoryClear_Click"/>
+
+            </StackPanel>
+
+        </Grid>
+
+
+     <Grid x:Name="StandardModeGrid" >
   
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
 
@@ -138,37 +196,38 @@
              BorderBrush="Transparent"
              BorderThickness="2"
              Opacity="1" 
-             Margin="0,5,5,0">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border Name="Border" 
+             Margin="0,5,5,0"
+             Click="ToggleMemoryPanel_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Name="Border" 
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="2"
                                     CornerRadius="5">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
 
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
-                                        <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
-                                    </Trigger>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                            <Setter TargetName="Border" Property="Opacity" Value="0.7"/>
+                                        </Trigger>
 
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
-                                        <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="DarkBlue"/>
+                                            <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
 
         <TextBox Name="textBoxStandard"
             HorizontalAlignment="Center"
@@ -207,7 +266,8 @@
                     Width="51.5"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    FontFamily="Segoe Script">
+                    FontFamily="Segoe Script"
+                    Click="MemoryClear_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -245,7 +305,8 @@
                     Width="51.5"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    FontFamily="Segoe Script">
+                    FontFamily="Segoe Script"
+                    Click="MemoryRecall_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -283,7 +344,8 @@
                     Width="51.5"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    FontFamily="Segoe Script">
+                    FontFamily="Segoe Script"
+                    Click="MemoryAdd_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -321,7 +383,8 @@
                     Width="51.5"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    FontFamily="Segoe Script">
+                    FontFamily="Segoe Script"
+                    Click="MemorySubtract_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -358,7 +421,8 @@
                     Width="51.5"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    FontFamily="Segoe Script">
+                    FontFamily="Segoe Script"
+                    Click="MemoryStore_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -395,7 +459,8 @@
                     Width="51.5"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    FontFamily="Segoe Script">
+                    FontFamily="Segoe Script"
+                    Click="MemoryShowStack_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
@@ -1457,6 +1522,7 @@
         </StackPanel>
             
     </Grid>
+        
         
     <Grid x:Name="ProgrammerModeGrid" >
         

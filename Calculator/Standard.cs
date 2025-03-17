@@ -18,6 +18,9 @@ namespace Calculator
         private string lastOperator = "";  
         private bool isNewEntry = true;
 
+        private List<double> memoryStack = new List<double>();
+        private double memoryValue = 0;
+
         public Standard(TextBox textBox)
         {
             this.textBox = textBox;
@@ -135,7 +138,6 @@ namespace Calculator
             bool isNegative = input.StartsWith("-");
             if (isNegative)
             {
-                // Dacă este negativ, elimină semnul pentru a aplica gruparea pe partea pozitivă
                 input = input.Substring(1);
             }
 
@@ -365,5 +367,77 @@ namespace Calculator
         {
             textBox.Text = "0";  
         }
+
+        public void MemoryClear(int selectedIndex)//MC
+        {
+            if (selectedIndex == -1) // Not selected, delete all
+            {
+                memoryStack.Clear();
+                memoryValue = 0;
+            }
+            else
+            {
+                int index = GetSelectedMemoryIndex(selectedIndex);
+                if (index >= 0)
+                {
+                    memoryStack.RemoveAt(index);
+                    memoryValue = memoryStack.Count > 0 ? memoryStack[memoryStack.Count - 1] : 0;
+                }
+            }
+        }
+
+        public string MemoryRecall()//MR
+        {
+            return memoryValue.ToString();
+        }
+
+        public void MemoryAdd(string input, int selectedIndex)//M+
+        {
+            if (double.TryParse(input, out double value))
+            {
+                int index = GetSelectedMemoryIndex(selectedIndex);
+                if (index >= 0)
+                {
+                    memoryStack[index] += value;
+                    memoryValue = memoryStack[index];
+                }
+            }
+        }
+
+        public void MemorySubtract(string input, int selectedIndex)//M-
+        {
+            if (double.TryParse(input, out double value))
+            {
+                int index = GetSelectedMemoryIndex(selectedIndex);
+                if (index >= 0)
+                {
+                    memoryStack[index] -= value;
+                    memoryValue = memoryStack[index];
+                }
+            }
+        }
+
+        public void MemoryStore(string input)//MC
+        {
+            if (double.TryParse(input, out double value))
+            {
+                memoryValue = value;
+                memoryStack.Add(value);
+            }
+        }
+
+        private int GetSelectedMemoryIndex(int selectedIndex)
+        {
+            if (selectedIndex >= 0 && selectedIndex < memoryStack.Count)
+                return selectedIndex; 
+
+            return memoryStack.Count > 0 ? memoryStack.Count - 1 : -1; 
+        }
+
+        public List<double> GetMemoryStack()
+        {
+            return memoryStack;
+        }
+
     }
 }

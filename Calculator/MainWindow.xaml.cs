@@ -484,5 +484,65 @@ namespace Calculator
             if (baseSelected == 2)
                 programmerMode.HandleLogicalOperation("NOT");
         }
+
+        private void MemoryClear_Click(object sender, RoutedEventArgs e)//MC
+        {
+            int selectedIndex = MemoryListBox.SelectedIndex;
+            standardMode.MemoryClear(selectedIndex);
+            UpdateMemoryList();
+        }
+
+        private void MemoryRecall_Click(object sender, RoutedEventArgs e)//MR
+        {
+            if (MemoryListBox.SelectedItem != null)
+            {
+                textBoxStandard.Text = MemoryListBox.SelectedItem.ToString();
+            }
+            else
+            {
+                textBoxStandard.Text = standardMode.MemoryRecall();
+            }
+        }
+
+        private void MemoryAdd_Click(object sender, RoutedEventArgs e)//M+
+        {
+            int selectedIndex = MemoryListBox.SelectedIndex;
+            standardMode.MemoryAdd(textBoxStandard.Text, selectedIndex);
+            UpdateMemoryList();
+        }
+
+        private void MemorySubtract_Click(object sender, RoutedEventArgs e)//M-
+        {
+            int selectedIndex = MemoryListBox.SelectedIndex;
+            standardMode.MemorySubtract(textBoxStandard.Text, selectedIndex);
+            UpdateMemoryList();
+        }
+
+        private void MemoryStore_Click(object sender, RoutedEventArgs e)//MS
+        {
+            standardMode.MemoryStore(textBoxStandard.Text);
+            UpdateMemoryList();
+        }
+
+        private void MemoryShowStack_Click(object sender, RoutedEventArgs e)//M▼
+        {
+            UpdateMemoryList(); 
+            MemoryPanel.Visibility = Visibility.Visible;
+        }
+
+        private void ToggleMemoryPanel_Click(object sender, RoutedEventArgs e)
+        {
+            MemoryPanel.Visibility = (MemoryPanel.Visibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void UpdateMemoryList()
+        {
+            MemoryListBox.Items.Clear();
+            foreach (var value in standardMode.GetMemoryStack())
+            {
+                MemoryListBox.Items.Add(value);
+            }
+        }
+
     }
 }

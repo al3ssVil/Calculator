@@ -781,7 +781,7 @@
                     <!-- Radical și expresia sub el -->
                     <Grid Margin="0,5,0,0">
                         <TextBlock Text="√" FontSize="20"/>
-                        <Border BorderThickness="0,1,0,0" BorderBrush="Black" Width="16" Height="1" VerticalAlignment="Top" Margin="12,8,0,0"/>
+                        <Border BorderThickness="0,1,0,0" BorderBrush="Black" Width="16" Height="1" VerticalAlignment="Top" Margin="12,7,0,0"/>
                         <TextBlock Text="x" FontSize="16" Margin="16,2,0,0"/>
                     </Grid>
                 </Grid>
@@ -1524,7 +1524,7 @@
     </Grid>
         
         
-    <Grid x:Name="ProgrammerModeGrid" >
+    <Grid x:Name="ProgrammerModeGrid">
         
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
 

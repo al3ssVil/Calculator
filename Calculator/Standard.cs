@@ -117,7 +117,6 @@ namespace Calculator
             {
                 string rawText = textBox.Text.Replace(",", "");
                 string[] parts = rawText.Split('.');
-
                 parts[0] = ApplyGrouping(parts[0]);
                 textBox.Text = parts.Length > 1 ? parts[0] + "." + parts[1] : parts[0];
             }
@@ -267,7 +266,7 @@ namespace Calculator
 
                 if (operatorText == "^2" || operatorText == "sqrt" || operatorText == "+/-" || operatorText == "1/x")
                 {
-                    PerformUnaryCalculation(operatorText); 
+                    PerformUnaryCalculation(operatorText);
                 }
                 else
                 {
@@ -308,10 +307,10 @@ namespace Calculator
                 default:
                     break;
             }
-            currentValue = Math.Round(currentValue, 9);
+            currentValue = Math.Round(currentValue, 4);
             //MessageBox.Show($"Value:{currentValue}");
             textBox.Text = currentValue.ToString();
-            textBox.Text = ApplyGrouping(currentValue.ToString());
+            UpdateTextBoxWithGrouping();
             isNewEntry = true;
         }
 
@@ -348,10 +347,10 @@ namespace Calculator
                     }
                     break;
             }
-            currentValue = Math.Round(currentValue, 9);
+            currentValue = Math.Round(currentValue, 4);
             //MessageBox.Show($"Value:{currentValue}");  
             textBox.Text = currentValue.ToString();
-            textBox.Text = ApplyGrouping(currentValue.ToString());
+            UpdateTextBoxWithGrouping();
             isNewEntry = true;
         }
 

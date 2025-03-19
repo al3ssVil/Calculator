@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Configuration;
+using System.Windows.Media;
 
 namespace Calculator
 {
@@ -17,8 +18,12 @@ namespace Calculator
             InitializeComponent();
             standardMode = new Standard(textBoxStandard);
             programmerMode = new Programmer(textBoxProgrammer, hexTextBox, decimalTextBox, octalTextBox, binaryTextBox);
-            this.KeyDown += (s, e) => standardMode.HandleKeyDown();  //function directly on textbox
-            this.KeyDown += (s, e) => programmerMode.HandleKeyDown();
+            this.KeyDown += (s, e) =>
+            {
+                standardMode.HandleKeyDown();
+                programmerMode.HandleKeyDown();
+                HighlightButton(e.Key);
+            };
 
             this.PreviewKeyDown += (s, e) => HandleDeleteKey(e);
             this.PreviewKeyDown += (s, e) => HandleEnterKey(e);
@@ -54,6 +59,7 @@ namespace Calculator
             programmerMode.HandleDigitGroupingChecked(isDigitGroupingEnabled);
 
             UpdateBasesBasedOnSelectedBase();
+            DisableInvalidButtons();
         }
 
         private void SaveLastUsedMode(string mode)
@@ -174,10 +180,65 @@ namespace Calculator
             }
             else if (ProgrammerModeGrid.Visibility == Visibility.Visible && buttonText != null)
             {
-                programmerMode.HandleButtonClick(buttonText);
+                if (baseSelected == 2)
+                {
+                    if ("01+-*/%=^()".Contains(buttonText))
+                    {
+                        programmerMode.HandleButtonClick(buttonText);
+                    }
+                }
+                else if (baseSelected == 10)
+                {
+                    if ("0123456789+-*/%=^()".Contains(buttonText))
+                    {
+                        programmerMode.HandleButtonClick(buttonText);
+                    }
+                }
+                else if (baseSelected == 8)
+                {
+                    if ("01234567+-*/%=^()".Contains(buttonText))
+                    {
+                        programmerMode.HandleButtonClick(buttonText);
+                    }
+                }
+                else if (baseSelected == 16)
+                {
+                    if ("0123456789ABCDEF+-*/%=^()".Contains(buttonText.ToUpper()))
+                    {
+                        programmerMode.HandleButtonClick(buttonText);
+                    }
+                }
                 UpdateBasesBasedOnSelectedBase();
 
             }
+        }
+
+        private void DisableInvalidButtons()
+        {
+            // Disable buttons based on the selected base
+            btnNumPad0.IsEnabled = (baseSelected == 2 || baseSelected == 10 || baseSelected == 8 || baseSelected == 16);
+            btnNumPad1.IsEnabled = (baseSelected == 2 || baseSelected == 10 || baseSelected == 8 || baseSelected == 16);
+            btnNumPad2.IsEnabled = (baseSelected == 10 || baseSelected == 8 || baseSelected == 16);
+            btnNumPad3.IsEnabled = (baseSelected == 10 || baseSelected == 8 || baseSelected == 16);
+            btnNumPad4.IsEnabled = (baseSelected == 10 || baseSelected == 8 || baseSelected == 16);
+            btnNumPad5.IsEnabled = (baseSelected == 10 || baseSelected == 8 || baseSelected == 16);
+            btnNumPad6.IsEnabled = (baseSelected == 10 || baseSelected == 8 || baseSelected == 16);
+            btnNumPad7.IsEnabled = (baseSelected == 8 || baseSelected == 10 || baseSelected == 16);
+            btnNumPad8.IsEnabled = (baseSelected == 10 || baseSelected == 16);
+            btnNumPad9.IsEnabled = (baseSelected == 10 || baseSelected == 16);
+            btnA.IsEnabled = (baseSelected == 16);
+            btnB.IsEnabled = (baseSelected == 16);
+            btnC.IsEnabled = (baseSelected == 16);
+            btnNumPad.IsEnabled = (baseSelected == 16);
+            btnE.IsEnabled = (baseSelected == 16);
+            btnF.IsEnabled = (baseSelected == 16);
+
+            // Disable operators and other special buttons based on the base
+            btnAddP.IsEnabled = true;
+            btnSubtractP.IsEnabled = true;
+            btnMultiply.IsEnabled = true;
+            btnDivide.IsEnabled = true;
+            btnEqualP.IsEnabled = true;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -239,12 +300,12 @@ namespace Calculator
 
                 MessageBox.Show($"Butonul:{clickedButton.Name}, baza:{baseSelected}");
                 UpdateBasesBasedOnSelectedBase();
+                DisableInvalidButtons();
             }
         }
 
         private void UpdateBasesBasedOnSelectedBase()
         {
-
             string inputValue = textBoxProgrammer.Text;
 
             //valid
@@ -541,6 +602,41 @@ namespace Calculator
             foreach (var value in standardMode.GetMemoryStack())
             {
                 MemoryListBox.Items.Add(value);
+            }
+        }
+
+        private void HighlightButton(Key key)
+        {
+            string keyString = key.ToString();
+
+            if (StandardModeGrid.Visibility == Visibility.Visible)
+            {
+                if (keyString.StartsWith("NumPad"))
+                {
+                    keyString = "D" + keyString.Substring(6);
+                }
+            }
+            else
+                if (ProgrammerModeGrid.Visibility == Visibility.Visible)
+                {
+                    if (keyString.StartsWith("D"))
+                    {   
+                        keyString = "NumPad" + keyString.Substring(1);
+                    }
+                }
+            
+
+            Button? buttonToHighlight = FindName($"btn{keyString}") as Button;
+
+            if (buttonToHighlight != null)
+            {
+                Brush originalColor = buttonToHighlight.Background;
+                buttonToHighlight.Background = Brushes.Gray;
+
+                Task.Delay(200).ContinueWith(_ =>
+                {
+                    Dispatcher.Invoke(() => buttonToHighlight.Background = originalColor);
+                });
             }
         }
 

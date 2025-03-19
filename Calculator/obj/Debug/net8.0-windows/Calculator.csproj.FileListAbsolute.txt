@@ -31,6 +31,7 @@ C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\M
 C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\App.g.cs
 C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator_MarkupCompile.cache
 C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator_MarkupCompile.lref
+C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\App.baml
 C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\MainWindow.baml
 C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.g.resources
 C:\Users\vilcu\Desktop\projects\Calculator\Calculator\obj\Debug\net8.0-windows\Calculator.GeneratedMSBuildEditorConfig.editorconfig

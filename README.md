@@ -68,7 +68,7 @@ This WPF-based calculator application, built in C#, replicates the standard Wind
 
 Clone the repository:
 
-`git clone https://github.com/al3ssVil/WPF-Calculator.git`
+`git clone https://github.com/al3ssVil/Calculator.git`
 
 Open the project in Visual Studio.
 

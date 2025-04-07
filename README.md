@@ -123,4 +123,3 @@ Additional Scientific Functions (sin, cos, log, etc.)
 
 UI Enhancements for a modern look & feel.
 
-Localization Support for multiple languages.

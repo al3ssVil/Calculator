@@ -5,6 +5,9 @@
 This WPF-based calculator application, built in C#, replicates the standard Windows Calculator functionality while incorporating additional features from the Programmer Mode. It supports arithmetic operations, memory functions, digit grouping, and base conversions.
 
 ## Features
+## Standard 
+
+![image](https://github.com/user-attachments/assets/56875572-c3e2-4b45-a5a0-22453bcedeb1)
 
 ### Standard Arithmetic Operations: 
 ●Addition (+)
@@ -38,6 +41,8 @@ This WPF-based calculator application, built in C#, replicates the standard Wind
 
 ●M> (Memory Stack Display)
 
+![image](https://github.com/user-attachments/assets/f31bdcee-3873-4bb5-b824-98ec112f4c1e)
+
 ### Utility Features:
 
 ●Backspace, Clear Entry (CE), Clear (C)
@@ -48,7 +53,11 @@ This WPF-based calculator application, built in C#, replicates the standard Wind
 
 ●Digit Grouping (Formatted based on system locale settings)
 
+![image](https://github.com/user-attachments/assets/aa3c8315-dd29-4373-9ecd-f7e836cad5aa)
+
 ### Programmer Mode:
+
+![image](https://github.com/user-attachments/assets/c9ad32b6-b5a5-43c2-ade4-83ea50f7c360)
 
 ●Supports base conversions: Binary (2), Octal (8), Decimal (10), Hexadecimal (16)
 

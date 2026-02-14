@@ -1,50 +1,30 @@
-## Build results
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
+## Visual Studio / WPF / .NET
 
-## Visual Studio cache / user files
+# Build folders
+bin/
+obj/
+
+# Visual Studio cache
 .vs/
-*.user
 *.suo
+*.user
 *.userosscache
 *.sln.docstates
 
-## Rider / ReSharper (dacă folosești)
-_ReSharper*/
-*.DotSettings.user
-
-## NuGet
-packages/
-*.nupkg
-*.snupkg
-.nuget/
-
-## Publish / artifacts
-publish/
-artifacts/
-
-## Test results
-[Tt]est[Rr]esult*/
-*.trx
-
-## Windows / system junk
-Thumbs.db
-Desktop.ini
-
-## Temporary files
-*.tmp
-*.temp
-
-## Generated files
+# Generated files
 *.g.cs
 *.g.i.cs
-
-## WPF specific (XAML generated)
+*.cache
 *.baml
 
-## Optional: exclude local database / settings dacă există
-*.mdf
-*.ldf
-appsettings.Development.json
+# NuGet / restore
+project.assets.json
+project.nuget.cache
+*.nupkg
+packages/
+
+# Logs / temp
+*.log
+*.tmp
+Thumbs.db
+Desktop.ini
